@@ -412,4 +412,131 @@ Ovaj dio analize pokazuje da je implementirana metoda DNS tunnelinga funkcionaln
 
 # 4. Covert timing channels - Marin Vabec
 
+Prikriveni vremenski kanali (eng. covert timing channels, dalje CTC) su tip prikrivenih kanala za slanje informacija koristeći postojeće resurse sustava koji originalno nisu namijenjeni tome te se često koriste kako bi se zaobišli sigurnosni protokoli.
+Kroz CTC se podaci šalju tako da se manipulira intervalima izvođenja nekih vremenski specifičnih događaja, npr. stizanje paketa. Za primjer, neki podatak ili informacija se može prvo šifrirati u binarni kod, te se svaki bit nalazi u vremenskom razmaku slanja 2 paketa. U tom primjeru, kraće slanje paketa može simbolizirati binarnu nulu, dok dulje slanje paketa simbolizira binarnu jedinicu. Primatelj šifriranog koda mora samo promatrati i bilježiti vremena dostavljenih paketa i zatim dešifrirati binarni kod u ASCII ili koji drugi početni kod.
+ S obzirom da CTC-ovi utječu samo na slanje paketa te ne utječu na same pakete, teže ih je zamijetiti provjeravanjem stiglih paketa.
+CTC-ovi se dijele na 2 kategorije: aktivni i pasivni. Kod aktivnih CTC-ova, pošiljatelj i primatelj eksplicitno uspostavljaju vezu komunikacije. Kod pasivnih CTC-ova, slanje podataka se oslanja na komunikaciju putem otvorenih kanala.
+U ovom projektu, radi se aktivni CTC, gdje pomoću socketa, pošiljatelj i primatelj uspostavljaju vezu, te pošiljatelj šalje šifrirane podatke.
+
+## 4.1. Plan izrade praktičnog dijela
+Planirano je izrada dvije skripte koje će simulirati pošiljatelja tajne poruke te primatelja tajne poruke. Koristit će se Linux okruženje te Python programski jezik. U Pythonu, koristit će se programiranje TCP socketa. Slanje paketa će se odvijati na lokalnoj mreži. Cilj je postići konzistentno slanje i dešifriranje poruke putem CTC-a.
+
+## 4.2 Metode i tehnike rada
+Za postavljanje virtualnog okruženja korišten je Oracle Virtual Box. Bitno je da je korištena izolirana okolina kako ne bi došlo do vanjskih smetnji te kako bi testiranje prošlo što kvalitetnije. 
+Operacijski sustav koji je korišten je Ubuntu/Linux Mint 22. Ovaj OS je odabran zbog stabilnosti, jednostavnosti konfiguracije mrežnih servisa i dostupnosti potrebnih alata.
+Za nadzor i analizu mrežnog prometa koriste se alati:
+
+- Wireshark - za detaljnu grafičku analizu paketa, dekodiranje DNS upita i odgovora te praćenje anomalija u prometu.
+
+- tcpdump - za tekstualno praćenje prometa u stvarnom vremenu, posebno korisno za verifikaciju da se tunelirani sadržaj doista pojavljuje unutar DNS paketa.
+
+Programi pošiljatelja i primatelja su izrađeni pomoću jezika Python i TCP socketa.
+
+## 4.3 Praktično dio
+Kako bi se simuliralo slanje tajnih podataka manipuliranjem vremena slanja paketa, izrađene su dvije Python skripte.
+Skripta sender.py predstavlja pošiljatelja, tj. TCP server, dok skripta receiver.py predstavlja primatelja poruke, tj. TCP klijent.
+
+### 4.3.1 Program pošiljatelja
+Prva skripta sender.py, simulira pošiljatelja tajne poruke. Čeka da se neki korisnik spoji na njegovu vezu te mu šalje pakete u vremenskim razmacima koji se mogu očitati i dešifrirati. 
+```
+import socket
+import time
+import binascii 
+```
+Ovaj isječak koda predstavlja biblioteke potrebne da kod radi.
+- socket: koristi se za izradu TCP socketa za iščekivanje klijenta i slanje paketa
+- time: iz ove biblioteke se koristi sleep() metoda, koja služi da pauzira program na željeno vrijeme
+- binascii: iz ove biblioteke se koristi metoda hexlify() koja pretvara podatke u heksadecimalni zapis
+```
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind(("", 8080))
+```
+Ovaj isječak postavlja TCP server na lokalnu adresu na port 8080.
+```
+covert = "TAJNA PORUKA " + "EOF"
+msg = "Obična poruka"
+covert_bin = ""
+for i in covert:
+    covert_bin += bin(int(binascii.hexlify(i.encode()), 16))[2:].zfill(8)
+```
+Ovaj isječak postavlja tajnu i površnu poruku. Površna poruka je ona koja se šalje normalnim putem, a tajna se šifrira znak po znak. Prvo se znak pretvori u bajtove (i.encode()), te se zatim pretvaraju u heksadecimalni kod te u binarni. Rezultatu se zatim miču prva dva bita ([2:]), te se dopunjuju nule kako bi konačan rezultat imao točno 8 bitova (zfill(8)).
+```
+s.listen(0)
+c,addr = s.accept()
+```
+Nakon toga se postavlja TCP server koji osluškuje i iščekuje klijenta.
+```
+n = 0
+count = 0
+while(count < len(covert_bin)):
+    for i in msg:
+        c.send(i.encode())
+        if (covert_bin[n] == "0"):
+            time.sleep(0.025)
+        else:
+            time.sleep(0.1)
+        n = (n + 1) % len(covert_bin)
+        count += 1
+c.send("EOF".encode())
+c.close()
+```
+Kada se neki klijent spoji, šalje mu se poruka. Tajna poruka se šalje tako da se površna poruka šalje znak po znak, a razmak između poslanih znakova označava jedan bit tajne poruke. Ako je bit nula, razmak između poslanih paketa/znakova je 0.025 sekundi, a dok je bit 1, razmak je 0.1 sekunde. Ako površna poruka dođe do kraja, a šifrirana poruka nije cijela prenesena, tekst površne poruke se ponavlja dok se šifrirana poruka ne prenese cijela. Zadnja poslana poruka je EOF (end of file).
+
+### 4.3.2 Program primatelja
+Ova skripta simulira TCP klijenta koji se spaja na server i prima podatke te ih dešifrira.
+```
+import socket
+import sys
+import time
+```
+- socket: implementacija TCP socketa
+- sys: metode za ispis podataka
+- time: očitavanje vremena dolaska paketa 
+```
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("127.0.0.1", 8080))
+paket = s.recv(4096).decode()
+```
+Ovdje se primatelj spaja na server/povezuje sa pošiljateljem i prima prvi paket.
+```
+covert_bin = ""
+while (paket.rstrip("\n") != "EOF"):
+    sys.stdout.write(paket)
+    sys.stdout.flush()
+    t0 = time.time()
+    paket = s.recv(4096).decode()
+    t1 = time.time()
+    delta = round(t1 - t0, 3)
+    sys.stdout.write("\tTime: \t" + str(delta) + "\n")
+    sys.stdout.flush()  
+    if (delta >= 0.1):
+        covert_bin += "1"
+    else:
+        covert_bin += "0"
+s.close()
+```
+Ovaj dio koda prima svaki sljedeći paket, te zapisuje poslani binarni kod. Prvo očitava vrijeme prije prvog poslanog bita u t0, zatim kad primi bit očitava vrijeme u t1, te razliku t1-t0 zapisuje u delta, zaokruženo na 3 decimale. S obzirom na to da je najkraće moguće čekanje bita 0.1, ako je čekanje dulje od ili jednako 0.1, označuje se da je taj bit jedinica, a ako je kraće (najčešće 0.25-0.26), bit se zapisuje kao nula.  Očitavanje bitova tajne poruke se ponavlja dok ne stigne paket sa tekstom EOF (end of file.) Kada se očita poruka EOF, zatvara se veza.
+```
+covert = ""
+i = 0
+while (i < len(covert_bin)):
+    b = covert_bin[i:i+8]
+    if(len(b) != 8):
+        break
+       n = int("0b{}".format(b), 2)
+    try:
+        print("byte:\t" + str(b))
+        print("int conversion: " + str(n))
+        print("char conversion:\t" + chr(n) + "\n")
+               covert += chr(n)
+           except:
+        covert += "?"
+           i += 8
+print("\nCovert message: " + covert)
+```
+Sa cijelim binarnim kodom zapisanim, program ga zatim dešifrira. Kod prolazi kroz binarni zapis bajt po bajt, tj. po 8 bitova, pretvara te bitove u dekadski zapis koji zatim pretvara u ASCII symbol (chr(n)), te njega dodaje u konačan zapis covert koji se ispisuje.
+
+## 4.4 Slanje poruke i snimanje prometa
+
+
 # 5. SMTP - Dino Primorac
