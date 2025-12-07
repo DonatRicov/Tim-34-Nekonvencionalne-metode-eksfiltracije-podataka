@@ -537,6 +537,49 @@ print("\nCovert message: " + covert)
 Sa cijelim binarnim kodom zapisanim, program ga zatim dešifrira. Kod prolazi kroz binarni zapis bajt po bajt, tj. po 8 bitova, pretvara te bitove u dekadski zapis koji zatim pretvara u ASCII symbol (chr(n)), te njega dodaje u konačan zapis covert koji se ispisuje.
 
 ## 4.4 Slanje poruke i snimanje prometa
+U ovom dijelu praktičnog rada provedeno je testiranje implementiranog covert timing channel-a. Cilj je bio poslati skrivenu poruku od pošiljatelja prema primatelju, dešifrirati skriptu sa strane primatelja te snimiti taj promet kako bi se mogao analizirati. Proces se sastoji od nekoliko koraka: pokretanja alata za snimanje prometa, pokretanje pošiljatelja, zatim primatelja, snimanje interakcije te analiza tog prometa.
 
+### 2.4.1. Snimanje prometa korištenjem tcpdump alata
+Za snimanje prometa koristio se tcpdump, s obzirom da je vrlo jednostavan za korištenje, a rezultati se mogu pregledati u Wiresharku. S obzirom na to da se slanje paketa radi lokalno na portu 8080, postavljeno je takvo snimanje prometa naredbom:
+```
+sudo tcp dump -Io tcp port 8080 -w ctc_tcp_capture.pcap
+```
+Tako se snimaju svi TCP paketi koji prolaze kroz lokalno loopback sučelje na portu 8080.
+
+### 2.4.2. Pokretanje programa pošiljatelja
+U novom terminalu je pokrenuta sender.py skripta.
+```
+python sender.py
+```
+Pokretanjem ove skripte ispisuje se:
+```
+Tajna poruka: TAJNA PORUKA EOF
+```
+Time je potvrđeno da je pošiljatelj aktivan te je ispisana tajna poruka koju primatelj mora uspijeti pročitati.
+
+### 2.4.3. Pokretanje programa primatelja
+U trećem terminalu se pokreće skripta primatelja receiver.py.
+```
+python receiver.py
+```
+Pokretanjem ove skripte, izvodi se komunikacija dva programa, te se u terminalu primatelja ispisuje očitavanje svakog primljenog paketa te vrijeme koje je trebalo da paket stigne, koje započinje ovako:
+```
+O       Time:   0.026
+b       Time:   0.1
+i       Time:   0.025
+č       Time:   0.1
+…
+```
+Zadnja linija ispisa u tom terminalu je bila 
+```
+Covert message: TAJNA PORUKA EOF
+```
+To potvrđuje da je primatelj uspješno primio sve bitove poruke i uspjeno ih dešifrirao.
+
+### 2.4.5. Zaustavljanje tcpdump-a
+Završetkom komunikacije, tcpdump se zaustvlja pritiskom tipki Ctrl + C. Alat je ispisao statistiku:
+<img width="232" height="67" alt="image" src="[results/screenshot/tcpdumprecording.png](https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/594cacaea92737ec83f9c7404c6ec7b4605fe0d1/results/screenshot/tcpdumprecording.png)" />
+
+<p align="center"><em>Slika 6: Statistika snimanja</em></p>
 
 # 5. SMTP - Dino Primorac
