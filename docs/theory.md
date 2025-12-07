@@ -578,7 +578,214 @@ To potvrđuje da je primatelj uspješno primio sve bitove poruke i uspjeno ih de
 
 ### 2.4.5. Zaustavljanje tcpdump-a
 Završetkom komunikacije, tcpdump se zaustvlja pritiskom tipki Ctrl + C. Alat je ispisao statistiku:
-<p align="center">
 ![Slika 8: Statistika snimanja](../results/screenshot/tcpdumprecording.png)
-</p>
+
+### 2.5 Analiza izvođenja
+Kako je izvođenje oba programa završeno, može se analizirati output programa. Posebice kod programa primatelja
+```
+O       Time:   0.026
+b       Time:   0.1
+i       Time:   0.025
+č       Time:   0.1
+n       Time:   0.025
+a       Time:   0.1
+        Time:   0.026
+p       Time:   0.026
+o       Time:   0.026
+r       Time:   0.101
+u       Time:   0.025
+k       Time:   0.026
+a       Time:   0.026
+O       Time:   0.026
+b       Time:   0.026
+i       Time:   0.102
+č       Time:   0.026
+n       Time:   0.102
+a       Time:   0.026
+        Time:   0.026
+p       Time:   0.101
+o       Time:   0.025
+r       Time:   0.102
+u       Time:   0.026
+k       Time:   0.026
+a       Time:   0.102
+O       Time:   0.026
+b       Time:   0.026
+i       Time:   0.101
+č       Time:   0.101
+n       Time:   0.101
+a       Time:   0.025
+        Time:   0.025
+p       Time:   0.102
+o       Time:   0.026
+r       Time:   0.025
+u       Time:   0.026
+k       Time:   0.026
+a       Time:   0.026
+O       Time:   0.102
+b       Time:   0.026
+i       Time:   0.026
+č       Time:   0.101
+n       Time:   0.025
+a       Time:   0.026
+        Time:   0.026
+p       Time:   0.026
+o       Time:   0.026
+r       Time:   0.026
+u       Time:   0.102
+k       Time:   0.026
+a       Time:   0.102
+O       Time:   0.026
+b       Time:   0.026
+i       Time:   0.026
+č       Time:   0.026
+n       Time:   0.025
+a       Time:   0.101
+        Time:   0.026
+p       Time:   0.026
+o       Time:   0.102
+r       Time:   0.102
+u       Time:   0.101
+k       Time:   0.1
+a       Time:   0.025
+O       Time:   0.101
+b       Time:   0.025
+i       Time:   0.101
+č       Time:   0.025
+n       Time:   0.026
+a       Time:   0.101
+        Time:   0.025
+p       Time:   0.025
+o       Time:   0.101
+r       Time:   0.025
+u       Time:   0.101
+k       Time:   0.025
+a       Time:   0.101
+O       Time:   0.025
+b       Time:   0.101
+i       Time:   0.025
+č       Time:   0.101
+n       Time:   0.025
+a       Time:   0.026
+        Time:   0.101
+p       Time:   0.025
+o       Time:   0.101
+r       Time:   0.101
+u       Time:   0.026
+k       Time:   0.102
+a       Time:   0.026
+O       Time:   0.026
+b       Time:   0.026
+i       Time:   0.026
+č       Time:   0.026
+n       Time:   0.102
+a       Time:   0.025
+        Time:   0.025
+p       Time:   0.101
+o       Time:   0.026
+r       Time:   0.026
+u       Time:   0.026
+k       Time:   0.026
+a       Time:   0.026
+O       Time:   0.026
+b       Time:   0.102
+i       Time:   0.026
+č       Time:   0.026
+n       Time:   0.026
+a       Time:   0.102
+        Time:   0.026
+p       Time:   0.102
+o       Time:   0.025
+r       Time:   0.102
+u       Time:   0.026
+k       Time:   0.026
+a       Time:   0.102
+O       Time:   0.1
+b       Time:   0.102
+i       Time:   0.102
+č       Time:   0.026
+n       Time:   0.102
+a       Time:   0.026
+        Time:   0.026
+p       Time:   0.026
+o       Time:   0.102
+r       Time:   0.102
+u       Time:   0.026
+k       Time:   0.026
+a       Time:   0.102
+Binary received: 0101010001000001010010100100111001000001001000000101000001001111010100100101010101001011010000010010000001000101010011110100011001
+
+Convert 8 byte binary to character:
+byte:   01010100
+int conversion: 84
+char conversion:        T
+
+byte:   01000001
+int conversion: 65
+char conversion:        A
+
+byte:   01001010
+int conversion: 74
+char conversion:        J
+
+byte:   01001110
+int conversion: 78
+char conversion:        N
+
+byte:   01000001
+int conversion: 65
+char conversion:        A
+
+byte:   00100000
+int conversion: 32
+char conversion:         
+
+byte:   01010000
+int conversion: 80
+char conversion:        P
+
+byte:   01001111
+int conversion: 79
+char conversion:        O
+
+byte:   01010010
+int conversion: 82
+char conversion:        R
+
+byte:   01010101
+int conversion: 85
+char conversion:        U
+
+byte:   01001011
+int conversion: 75
+char conversion:        K
+
+byte:   01000001
+int conversion: 65
+char conversion:        A
+
+byte:   00100000
+int conversion: 32
+char conversion:         
+
+byte:   01000101
+int conversion: 69
+char conversion:        E
+
+byte:   01001111
+int conversion: 79
+char conversion:        O
+
+byte:   01000110
+int conversion: 70
+char conversion:        F
+
+byte:   01
+int conversion: 1
+char conversion:
+
+Covert message: TAJNA PORUKA EOF
+```
+Može se vidjeti da je svaki znak pravilno pročitan.
+
 # 5. SMTP - Dino Primorac
