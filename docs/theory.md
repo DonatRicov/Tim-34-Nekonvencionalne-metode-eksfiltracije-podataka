@@ -787,5 +787,8 @@ char conversion:
 Covert message: TAJNA PORUKA EOF
 ```
 Može se vidjeti da je svaki znak pravilno pročitan.
+Osim u samom terminalu, u Wiresharku možemo provjeriti da se iz snimljenog prometa može vidjeti samo površna poruka:
+![Slika 9: Sadržaj TCP paketa](../results/screenshot/wireshark_ctc.png)
+Navedenom analizom možemo zaključiti da je tajna poruka uistinu poslana i primljena, i gotovo je neprimjetna iz drugih perspektiva. U Wireshark pogledu se može vidjeti vrijeme dolaska svakog paketa, ali to samo po sebi nije dovoljno kako bi se otkrilo da uopće postoji tajna poruka.
 
 # 5. SMTP - Dino Primorac
