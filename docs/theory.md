@@ -38,7 +38,31 @@ Praktični dio rada temelji se na izgradnji i simulaciji okruženja u kojem se d
 
 ## 2.2. Metode i tehnike rada
 
-Tekst 
+Za postavljanje izoliranog laboratorijskog okruženja koristi se Oracle VirtualBox, koji omogućuje stvaranje virtu­alnih strojeva i simuliranje različitih uloga u napadu - klijenta, napadača i DNS poslužitelja. Operacijski sustav korišten u virtualnim strojevima je Ubuntu/Linux Mint 22, zbog stabilnosti, jednostavnosti konfiguracije mrežnih servisa i dostupnosti potrebnih alata.
+
+Za nadzor i analizu mrežnog prometa koriste se alati:
+
+- Wireshark - za detaljnu grafičku analizu paketa, dekodiranje DNS upita i odgovora te praćenje anomalija u prometu.
+
+- tcpdump - za tekstualno praćenje prometa u stvarnom vremenu, posebno korisno za verifikaciju da se tunelirani sadržaj doista pojavljuje unutar DNS paketa.
+
+U eksperimentalnoj konfiguraciji lokalna fizička računala služe kao tunnel endpoint, odnosno krajnja točka napadačkog kanala. Uz to se simulira rad lokalnog DNS poslužitelja čija je adresa namjerno postavljena na 127.0.0.1, kako bi sav DNS promet bio preusmjeren na Python skriptu koja oponaša ponašanje DNS servera. Time se osigurava potpuno kontrolirano okruženje za testiranje bez rizika utjecaja na stvarnu mrežnu infrastrukturu.
+
+Klijentski program i simulirani DNS poslužitelj implementirani su u programskom jeziku Python, što omogućuje potpunu fleksibilnost u manipuliranju DNS zaglavljima i generiranju vlastitih DNS paketa. Ovaj pristup omogućuje jasno prikazivanje osnovne ideje tuneliranja - enkapsuliranja proizvoljnih podataka u DNS upit i njihovo naknadno izvlačenje na strani poslužitelja.
+
+Logika simuliranog napada uključuje nekoliko ključnih koraka:
+
+1. Postavljanje lokalne domene - za potrebe eksperimenta definira se testna domena “eksfiltracija.hr”, koja predstavlja napadačevu domenu nad kojom DNS poslužitelj ima potpunu kontrolu.
+
+2. Simulacija DNS poslužitelja - Python skripta sluša dolazne DNS upite na lokalnoj adresi i dekodira skrivene podatke unutar naziva domene.
+
+3. Konfiguracija klijenta - klijentski program kodira tajnu poruku (npr. tekst ili manju datoteku) u oblik pogodan za umetanje u DNS upite, obično uz korištenje base32 ili sličnih tehnika.
+
+4. Slanje tuneliranog prometa - poruka se šalje segmentirana i umetnuta u niz DNS upita prema napadačevoj domeni, čime se simulira proces eksfiltracije podataka.
+
+5. Nadzor prometa alatima tcpdump i Wireshark - prisluškuje se mrežni promet kako bi se potvrdila prisutnost neobičnih, produljenih ili kodiranih DNS zahtjeva, što je karakteristično za DNS tunneling.
+
+6. Obrada i rekonstrukcija podataka na strani poslužitelja - kada simulirani DNS server primi upit, on detektira i dekodira skrivene informacije te rekonstruira originalnu tajnu poruku.
 
 ## 2.3. Postavljanje radnog okruženja
 
@@ -232,8 +256,8 @@ Te sam dobio datoteku dns_tunnel.pcap.
 
 
 
-## 2.2. Steganografija - Lana Maček
+# 3. Steganografija - Lana Maček
 
-## 2.3. Covert timing channels - Marin Vabec
+# 4. Covert timing channels - Marin Vabec
 
-## 2.4. SMTP - Dino Primorac
+# 5. SMTP - Dino Primorac
