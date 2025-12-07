@@ -312,9 +312,62 @@ Snimljeni promet spremljen je u datoteku dns_tunnel.pcap, koja se može dodatno 
 
 <p align="center"><em>Slika 6: Statistika snimanja</em></p>
 
-
 ### 2.5. Analiza prometa u Wiresharku
 
+Nakon što je mrežni promet snimljen pomoću alata tcpdump, sljedeći je korak bio detaljno analizirati sadržaj paketa korištenjem Wiresharka. Ova analiza omogućuje potvrdu da se tajna poruka doista prenosila unutar DNS upita, kao i uvid u način na koji izgleda tunelirani DNS promet na paketnoj razini.
+
+### 2.5.1. Otvaranje snimljenog prometa u Wiresharku
+
+Prvo sam pokrenuo aplikaciju Wireshark te sam nakon pokretanja otvorio snimljenu datoteku dns_tunnel.pcap. Ovime je učitan sav promet snimljen tijekom slanja tunelirane DNS poruke.
+
+### 2.5.2. Filtriranje DNS paketa
+
+Kako bi se prikazali samo paketi vezani uz DNS komunikaciju, u polje za filtriranje upisao sam dns.
+
+Nakon primjene filtera, u glavnom prozoru prikazani su isključivo DNS paketi, što omogućuje fokusiranu analizu bez šuma iz drugih protokola.
+
+Wireshark je odmah prikazao očekivani DNS upit koji sadrži vrlo dugu poddomenu. Upravo taj produljeni tekst predstavlja Base64 kodiranu poruku umetnutu u DNS QNAME polje.
+
+### 2.5.3. Uvid u sadržaj DNS paketa
+
+Nakon što sam kliknuo na odgovarajući DNS paket, u srednjem panelu Wiresharka otvorila se njegova struktura. Unutar sekcije Domain Name System nalazila se stavka Name, koja je prikazala punu domenu koja je bila predmet DNS upita:
+```
+T3ZhIHBvcnVrYSBqZSB0YWpuYS4=.dataexfiltration.hr
+```
+Ovdje se jasno vidi da je prva komponenta domene dugačak Base64 niz, koji predstavlja kodiranu verziju poruke:
+
+"Ova poruka je tajna."
+
+Ovaj korak potvrđuje da se tuneliranje odvija kroz polje QNAME, koje DNS poslužitelji normalno obrađuju, a sigurnosni sustavi često zanemaruju.
+
+<img width="934" height="579" alt="Snimka zaslona 2025-12-07 201726" src="https://github.com/user-attachments/assets/e02e53b5-b117-447c-8598-87e0c1826854" />
+
+<p align="center"><em>Slika 7: Sadržaj DNS paketa</em></p>
+
+### 2.5.4. Verifikacija kodiranog sadržaja
+Iako server u ovom projektu automatski dekodira Base64 niz, u Wireshark analizi moguće je dodatno provjeriti da se u paketu uistinu nalazi poruka koju sam poslao.
+
+Kodirani dio:
+```
+T3ZhIHBvcnVrYSBqZSB0YWpuYS4=
+```
+može se po želji ručno dekodirati pomoću online alata ili naredbe:
+```bash
+echo 'T3ZhIHBvcnVrYSBqZSB0YWpuYS4=' | base64 -d
+```
+Rezultat je:
+```
+Ova poruka je tajna.
+```
+Time je potvrđeno da se cijeli sadržaj poruke nalazi u DNS paketu i da je uspješno prenesen sustavom DNS tunnelinga.
+
+Iako ručna dekodacija nije nužna u okviru ovog praktičnog rada, ona dodatno demonstrira način na koji se eksfiltrirani podaci mogu rekonstruirati iz samog prometa bez pomoći servera.
+
+### 2.5.5. Potvrda ispravnosti implementacije
+
+Analiza u Wiresharku potvrdila je sve ključne korake implementacije. Tajna poruka uspješno je kodirana u Base64 format te je kodirana poruka umetnuta je u DNS QNAME polje. Ovime je evidentno da je DNS klijent poslao je tunelirani upit, a DNS poslužitelj primio je upit i dekodirao poruku. Uz to, mrežni promet sadrži sve elemente potrebne za rekonstrukciju poruke
+
+Ovaj dio analize pokazuje da je implementirana metoda DNS tunnelinga funkcionalna i da se eksfiltracija podataka može izvesti koristeći standardni DNS protokol bez potrebe za dodatnim kanalima komunikacije.
 
 
 
