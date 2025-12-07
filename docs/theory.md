@@ -225,6 +225,7 @@ Ovaj dio skripte služi kao demonstracija kako se jednostavan tekst može “zap
 ## 2.4. Slanje poruke i snimanje prometa
 
 U ovom dijelu praktičnog rada provedeno je testiranje implementiranog DNS tunneling sustava. Cilj je bio poslati skrivenu poruku klijentskom skriptom, omogućiti DNS poslužitelju da ju dekodira te usporedno snimiti cjelokupni mrežni promet kako bi se analizirali korišteni DNS paketi. Proces se sastoji od nekoliko koraka: pokretanja alata za snimanje prometa, aktiviranja DNS poslužitelja, slanja tunelirane poruke i konačnog pregleda dobivenih rezultata.
+
 ### 2.4.1. Snimanje prometa korištenjem tcpdump alata
 Za praćenje mrežnog prometa odlučio sam koristiti alat tcpdump, budući da omogućuje precizno filtriranje paketa i spremanje snimljenog prometa u .pcap format pogodan za naknadnu analizu u Wiresharku. Budući da se DNS poslužitelj izvršava lokalno i sluša na portu 5354, konfigurirano je snimanje tog prometa. Snimanje prometa pokrenuo sam naredbom:
 ```
@@ -235,6 +236,8 @@ Na ovaj je način pokrenuto snimanje svih UDP paketa koji prolaze kroz loopback 
 Ovaj korak bio je važan kako bi se kasnije moglo dokazati da se poruka doista prenosi unutar DNS upit
 
 <img width="674" height="53" alt="image" src="https://github.com/user-attachments/assets/68adec33-df9d-417a-9c34-c6cd96bd68a8" />
+
+<p align="center"><em>Slika 2: Pokretanje snimanja mrežnog prometa</em></p>
 
 ### 2.4.2. Pokretanje DNS servera
 
@@ -250,7 +253,7 @@ Starting DNS server on 0.0.0.0:5354
 Ova poruka potvrđuje da se poslužitelj uspješno pokrenuo, da sluša na svim mrežnim sučeljima te da je spreman primati DNS upite. Poslužitelj se izvršava u kontinuiranoj petlji i obrađuje svaki pristigli DNS paket, uključujući i one koji nose kodirane podatke.
 <img width="830" height="84" alt="image" src="https://github.com/user-attachments/assets/63987700-56cc-457f-83bd-92c276547971" />
 
-<p align="center"><em>Slika 2: Pokretanje DNS poslužitelja</em></p>
+<p align="center"><em>Slika 3: Pokretanje DNS poslužitelja</em></p>
 
 ### 2.4.3. Pokretanje klijenta i slanje poruke
 
@@ -277,7 +280,7 @@ Ovo pokazuje da je server obradio zahtjev te vratio očekivani odgovor s IP adre
 
 <img width="729" height="238" alt="image" src="https://github.com/user-attachments/assets/1e803ab6-0953-43a0-8d24-d0fcdf73e0a1" />
 
-<p align="center"><em>Slika 3: Uspiješno slanje i odgovor DNS upita</em></p>
+<p align="center"><em>Slika 4: Uspiješno slanje i odgovor DNS upita</em></p>
 
 ### 2.4.4. Čitanje tajne poruke
 
@@ -292,7 +295,7 @@ DNS poslužitelj izdvojio je Base64 kodirani segment iz imena domene, dekodirao 
 
 <img width="819" height="90" alt="image" src="https://github.com/user-attachments/assets/a6b2dc61-b38e-4c94-aeb6-af558db5e994" />
 
-<p align="center"><em>Slika 4: Prikaz dekodirane poruke na serveru</em></p>
+<p align="center"><em>Slika 5: Prikaz dekodirane poruke na serveru</em></p>
 
 ### 2.4.5. Zaustavljanje tcpdump-a
 
@@ -307,7 +310,7 @@ Snimljeni promet spremljen je u datoteku dns_tunnel.pcap, koja se može dodatno 
 
 <img width="232" height="67" alt="image" src="https://github.com/user-attachments/assets/ffc478b0-9204-4ccb-a292-85e283a33e76" />
 
-<p align="center"><em>Slika 5: Statistika snimanja</em></p>
+<p align="center"><em>Slika 6: Statistika snimanja</em></p>
 
 
 ### 2.5. Analiza prometa u Wiresharku
