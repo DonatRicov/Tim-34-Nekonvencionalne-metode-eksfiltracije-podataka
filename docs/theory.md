@@ -26,10 +26,6 @@ Ovakva struktura, zajedno sa standardizacijom samog DNS-a, su razlog njegove uč
 
 <img width="6056" height="2050" alt="image" src="https://github.com/user-attachments/assets/29ece733-e97f-48fa-b4b3-a22080c25a47" />
 
-<p align="center">
-  <img src="putanja/do/slike.png" alt="Primjer DNS tunnelinga">
-</p>
-
 <p align="center"><em>Slika 1: Primjer DNS tunnelinga</em></p>
 
 Iako je tehnika široko poznada u području mrežne i kibernetičke sigurnosti kao medij zlouporabe informacija, krađu podataka i održavanje zlonamjernih kanala, DNS tunneling ima raširene legitimne primjene. Pojedini administratori su korisnici ove tehnike jer im dopušta omogućavanje ograničenih mrežnih usluga u ograničenim ili čak zatvorenim okruženjima. Ipak, i u ovakvim okruženjima primjena ovakvog pristupa može sa sobom nositi legitiman rizik koji može komprimirati sigurnosne politike mreže.
