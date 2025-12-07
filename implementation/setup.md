@@ -69,7 +69,7 @@ U terminalu poslužitelja trebala bi se pojaviti dekodirana poruka:
 ```
 Extracted secret message: Sutra kava u 12:00.
 ```
-## **5. Analiza prometa u Wiresharku**
+## 5. Analiza prometa u Wiresharku
 
 1. Zaustavite `tcpdump` pritiskom Ctrl + C.
 2. Otvorite datoteku u Wiresharku:
@@ -80,6 +80,6 @@ wireshark dns_capture.pcap
 ```
 dns
 ```
-4. U DNS Query → *Name* polju vidjet ćete Base64-kodiranu poruku kao poddomenu domene `eksfiltracija.hr`.
+4. U DNS Query Name polju vidjet ćete Base64-kodiranu poruku kao poddomenu domene `eksfiltracija.hr`.
 
 Time se potvrđuje uspješan DNS tunneling i eksfiltracija podataka.
