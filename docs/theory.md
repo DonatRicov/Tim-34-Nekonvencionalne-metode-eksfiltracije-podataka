@@ -578,8 +578,5 @@ To potvrđuje da je primatelj uspješno primio sve bitove poruke i uspjeno ih de
 
 ### 2.4.5. Zaustavljanje tcpdump-a
 Završetkom komunikacije, tcpdump se zaustvlja pritiskom tipki Ctrl + C. Alat je ispisao statistiku:
-<img width="232" height="67" alt="image" src="results/screenshot/tcpdumprecording.png" />
-
-<p align="center"><em>Slika 6: Statistika snimanja</em></p>
-
+![Slika 8: Statistika snimanja](results/screenshot/tcpdumprecording.png)
 # 5. SMTP - Dino Primorac
