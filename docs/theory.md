@@ -1078,7 +1078,7 @@ Servisi:
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot3%20-%20snimanje%20prometa%20tcpdumpon.png?raw=true" />
 <p align="center"><em>Slika: Rezultat pinga </em></p>
 
-Snimanje prometa (pcap)
+## Snimanje prometa (pcap)
 
 Za potrebe analize mrežnog prometa i dokazivanja sadržaja SMTP komunikacije, promet je sniman pomoću tcpdump na MailServer VM-u (na host-only sučelju enp0s8) dok se slala e-pošta.
 
@@ -1091,7 +1091,7 @@ Nakon slanja poruka snimanje je zaustavljeno (Ctrl+C), čime je dobivena .pcap d
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot%204%20-%20slanje%20maila%20sa%20izmjenjenim%20headerom.png?raw=true" />
 <p align="center"><em>Slika: Client terminal nakon pokretanja skripte (ispis poslanih poruka i header vrijednosti)</em></p>
 
-Provjera primitka poruka (MailHog Web UI)
+## Provjera primitka poruka (MailHog Web UI)
 
 Nakon izvršavanja skripte, otvoreno je MailHog web sučelje na adresi:
 
