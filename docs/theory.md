@@ -1058,15 +1058,17 @@ MailHogje alat za testiranje e‑pošte koji se ponaša kao lokalni SMTP server 
 Wiresharkje alat za snimanje i analizu mrežnog prometa (packet analyzer). Omogućuje filtriranje prometa po protokolima/portovima i detaljan uvid u pakete. U ovom zadatku koristi se za prikaz SMTP komunikacije i pregled cijelog razgovora kroz opciju "Follow TCP Stream".
 
 ### 5.2.3. Postavljanje okruženja
-izveden u Oracle VirtualBox okruženju s dvije virtualne mašine povezane preko Host‑Only mreže:
-• Mint-Client (pošiljatelj): 192.168.234.11
-• Mint-MailServer (MailHog): 192.168.234.10
-žna konfiguracija VM‑ova:
-• Adapter 1: NAT (internet za instalaciju paketa)
-• Adapter 2: Host‑Only (lab mreža za komunikaciju između VM‑ova)
-servisi:
-• SMTP: 192.168.234.10:1025
-• Web UI: http://192.168.234.10:8025
+Ssimulaciju je izvedena u Oracle VirtualBox okruženju s dvije virtualne mašine povezane preko Host‑Only mreže:
+- Mint-Client (pošiljatelj): 192.168.234.11
+- Mint-MailServer (MailHog): 192.168.234.10
+  
+Mrežna konfiguracija VM‑ova:
+- Adapter 1: NAT (internet za instalaciju paketa)
+- Adapter 2: Host‑Only (lab mreža za komunikaciju između VM‑ova)
+  
+Servisi:
+- SMTP: 192.168.234.10:1025
+- Web UI: http://192.168.234.10:8025
 
 # 6. Zaključak
 Kroz ovaj projektni zadatak, sustavno su istražene teorijske osnove i praktična primjena četiri nekonvencionalne metode eksfiltracije podataka. Kroz detaljan teorijski pregled i izradu funkcionalnih praktičnih primjera, demonstrirano je kako se ove tehnike mogu iskoristiti za prikriveni prijenos podataka, često zaobilazeći uobičajene sigurnosne mjere i mehanizme. Praktičnim simulacijama je potvrđena funkcionalnost svake metode.
