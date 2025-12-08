@@ -24,7 +24,17 @@
 
 11. IETF. (2013). DNS privacy considerations (RFC 7626). Internet Engineering Task Force. https://doi.org/10.17487/RFC7626
 
-## Marin Vabec - 
+## Marin Vabec - Covert timing channels
 
-Fortinet. (n.d.). *What Is Data Exfiltration? And How Can You Prevent It?*  
+1. Fortinet. (n.d.). *What Is Data Exfiltration? And How Can You Prevent It?*  
 Preuzeto s: [https://www.fortinet.com/resources/cyberglossary/data-exfiltration](https://www.fortinet.com/resources/cyberglossary/data-exfiltration)
+
+2. Jašek, A., & Babić, M. (2023). Analiza utjecaja i suzbijanje skrivenih vremenskih kanala. Advanced Engineering Science, [https://www.astesj.com/v08/i02/p15/#1639848202927-7c57dd68-5f71]
+
+3. Shojafar, M., Alazab, M., Tafazolli, R., & Liu, J. (2021). Covert timing channels in IoT networks: A review of techniques and countermeasures. U 2021 IEEE Conference on Dependable and Secure Computing (DSC). IEEE. [https://doi.org/10.1109/DSC49826.2021.9569751]
+   
+4. Altawashdeh, K., & Purdy, C. (2020). Detecting covert timing channels using machine learning. U 2020 IEEE 17th Annual Consumer Communications & Networking Conference (CCNC). IEEE. [https://doi.org/10.1109/CCNC46108.2020.9301285]
+
+5. WN E-Security. (2023, srpanj 12). Što su skriveni vremenski kanali i kako se koriste u cyber napadima? [https://wnesecurity.com/what-are-covert-timing-channels-and-how-are-they-used-in-cyberattacks/]
+
+ 
