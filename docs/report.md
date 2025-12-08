@@ -1,4 +1,4 @@
-# Final report / summary   
+# Zaključak
 
 Kroz ovaj projektni zadatak, sustavno su istražene teorijske osnove i praktična primjena četiri nekonvencionalne metode eksfiltracije podataka. Kroz detaljan teorijski pregled i izradu funkcionalnih praktičnih primjera, demonstrirano je kako se ove tehnike mogu iskoristiti za prikriveni prijenos podataka, često zaobilazeći uobičajene sigurnosne mjere i mehanizme. Praktičnim simulacijama je potvrđena funkcionalnost svake metode.
 
