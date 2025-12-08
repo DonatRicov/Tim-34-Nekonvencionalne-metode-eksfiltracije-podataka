@@ -1083,11 +1083,8 @@ Primjer naredbe:
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot1%20-%20Pokretanje%20SMTP%20servera%20koji%20slu%C5%A1a%20SMTP%20i%20HTTP%20zahtjeve.png?raw=true"/>
 <p align="center"><em>Slika: Postavke mrežnih adaptera u VirtualBoxu (NAT + Host‑Only).</em></p>
 
-<img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot2%20-%20mailhog%20UI.png?raw=true" />
-<p align="center"><em>Slika: MailHog terminal</em></p>
-
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot3%20-%20snimanje%20prometa%20tcpdumpon.png?raw=true" />
-<p align="center"><em>Slika: Rezultat pinga </em></p>
+<p align="center"><em>Slika: Tcpdump terminal </em></p>
 
 ## Snimanje prometa (pcap)
 
@@ -1098,6 +1095,18 @@ Primjer naredbe:
 sudo tcpdump -i enp0s8 -nn port 1025 -w smtp_capture.pcap
 ```
 
+Provjera primitka poruka (MailHog Web UI)
+
+Nakon izvršavanja skripte, otvoreno je MailHog web sučelje na adresi:
+
+http://192.168.234.10:8025
+
+U inboxu su vidljive poslane poruke, a otvaranjem pojedine poruke moguće je vidjeti sadržaj i zaglavlja, uključujući prilagođeno zaglavlje X-Lab-Tag.
+
+<img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot2%20-%20mailhog%20UI.png?raw=true" />
+<p align="center"><em>Slika: MailHog UI</em></p>
+
+## Provjera primitka poruka
 Nakon slanja poruka snimanje je zaustavljeno (Ctrl+C), čime je dobivena .pcap datoteka spremna za analizu u Wiresharku.
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot%204%20-%20slanje%20maila%20sa%20izmjenjenim%20headerom.png?raw=true" />
 <p align="center"><em>Slika: Client terminal nakon pokretanja skripte (ispis poslanih poruka i header vrijednosti)</em></p>
