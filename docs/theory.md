@@ -1133,11 +1133,15 @@ U inboxu su vidljive poslane poruke, a otvaranjem pojedine poruke moguće je vid
 
 ## Provjera primitka poruka (MailHog Web UI)
 
-Nakon izvršavanja skripte, otvoreno je MailHog web sučelje na adresi:
+Snimanje prometa (pcap)
 
-http://192.168.234.10:8025
+Za potrebe analize mrežnog prometa i dokazivanja sadržaja SMTP komunikacije, promet je sniman pomoću tcpdump na MailServer VM-u (na Host-Only sučelju enp0s8) dok se slala e-pošta.
 
-U inboxu su vidljive poslane poruke, a otvaranjem pojedine poruke moguće je vidjeti sadržaj i zaglavlja, uključujući prilagođeno zaglavlje X-Lab-Tag
+Primjer naredbe:
+
+sudo tcpdump -i enp0s8 -nn port 1025 -w smtp_capture.pcap
+
+Nakon slanja poruka snimanje je zaustavljeno (Ctrl+C), čime je dobivena .pcap datoteka spremna za analizu u Wiresharku.
 
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot6%20-%20mailhog%20mail%20-%20uslikan%20izmijenjen%20header.png?raw=true" />
 <p align="center"><em>Slika: MailHog web UI (otvorena poruka + prikaz zaglavlja s X‑Lab‑Tag)</em></p>
