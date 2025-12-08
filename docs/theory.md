@@ -1025,6 +1025,14 @@ Navedenom analizom možemo zaključiti da je tajna poruka uistinu poslana i prim
 
 # 5. SMTP - Dino Primorac
 
+# 6. Zaključak
+Kroz ovaj projektni zadatak, sustavno su istražene teorijske osnove i praktična primjena četiri nekonvencionalne metode eksfiltracije podataka. Kroz detaljan teorijski pregled i izradu funkcionalnih praktičnih primjera, demonstrirano je kako se ove tehnike mogu iskoristiti za prikriveni prijenos podataka, često zaobilazeći uobičajene sigurnosne mjere i mehanizme. Praktičnim simulacijama je potvrđena funkcionalnost svake metode.
+Sve metode obrađene u radu, DNS tunneling, steganografija, covert timing channels i zlouporaba SMTP protokola, na neki način iskorištavaju legitimne protokole i formate datoteka koji odstupa od njihove primarne namjene, ali ne nužno i od njihovih tehničkih specifikacija. Baš iz tog razloga je otkrivanje ovih metoda posebno zahtjevno jer zahtijeva naprednu analizu ponašanja (npr. analizu DNS prometa, statističku analizu slikovnih datoteka, praćenje vremenskih obrazaca, detaljnu analizu SMTP paketa) umjesto jednostavnog filtriranja ili analize primarnog sadržaja poslanih/primljenih paketa ili datoteka.
+U ovom radu se nedvosmisleno naglašava važnost učenja i proaktivnog pristupa u suvremenoj kibernetičkoj i informatičkoj sigurnosti. Razumijevanje napadačkih tehnika je bitan preduvjet za izgradnju učinkovitih detekcijskih obrambenih sustava. S brzim rastom kompleksnosti tehnologije, napadi postaju sve sofisticiraniji, koristeći ove metode, ili čak i njihove kombinacije, ali i kombinacije sa metodama poput umjetne inteligencije.
+Ključno je zapamtiti da zaštita informacijskih sustava ne smije biti pasivna. Ona zahtijeva kontinuiranu edukaciju, dubinsku analizu mrežnog prometa i sustavnih podataka te implementaciju višeslojnog pristupa zaštite. Nemoguće je uvijek u potpunosti biti zaštićen od svih napada, ali bitno je moći se pokriti od što većeg broja potencijalnih napada te upamtiti da je sigurnost proces koji traje kroz cijeli životni vijek, bilo to aplikacije, organizacije ili pojedinačne osobe.
+
+
+
 # Literatura i reference
 Fortinet. (n.d.). *What Is Data Exfiltration? And How Can You Prevent It?*  
 Preuzeto s: [https://www.fortinet.com/resources/cyberglossary/data-exfiltration](https://www.fortinet.com/resources/cyberglossary/data-exfiltration)
