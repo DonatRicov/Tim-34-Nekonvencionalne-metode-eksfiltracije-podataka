@@ -435,8 +435,9 @@ Iako je steganografija korištena od strane kriminalaca i terorista ona, poput s
 4. Kapacitet: Količina informacija koje se mogu sakriti unutar nositeljske slike.
    
 U nekim izvorima on je naveden i kao Trokut kompromisa. U tom slučaju nije uključena sigurnost kao *trade-off* faktor.
-
-<img width="481" height="400" alt="image" src="https://github.com/user-attachments/assets/fae169b0-2024-4e19-8491-9b38464032e0" />
+<p align="center">
+<img width="281" height="200" alt="image" src="https://github.com/user-attachments/assets/fae169b0-2024-4e19-8491-9b38464032e0" /></p>
+<p align="center"><em>Slika 8: Trokut kompromisa</em></p>
 
 #### Metode i tehnike steganografije
 
@@ -444,27 +445,33 @@ Jedna od prvih vrsta digitalne steganografije bila je tehnika najmanje značajno
 1. Odabrati sliku na kojoj će biti sakrivena informacija. Idealna je originalna slika jer se u promjeni javno dostupne fotografije može izmijenjeni primjerak lako usporediti sa originalnom slikom te time kompromitirati sigurnost sakrivenih podataka.
 2. Sliku je potrebno pretvoriti u niz bitova (koji određuju boju piksela koji čine digitalnu sliku)
 3. Pronađi najmanje značajan bit svakog binarnog niza. Taj bit je krajnji desni bit u nizu. Ako se taj bit pretvori u 0 boja će i dalje biti skoro identična originalnoj.
-4. Napravi izmjene najmanje značajnih bitovatako da se pri njihovoj izolaciji i ponovnom sastavljanu ispiše neka poruka. U slici prikazanoj ispod promjenjeni su bitovi kako bi ispisali slovo e.Slovo, tj. Poruka je skrivena u takozvanoj stego slici
-   
-<img width="940" height="314" alt="image" src="https://github.com/user-attachments/assets/8d664675-eb0d-48ae-8dfe-234185cdf363" />
+4. Napravi izmjene najmanje značajnih bitovatako da se pri njihovoj izolaciji i ponovnom sastavljanu ispiše neka poruka. U slici prikazanoj ispod promjenjeni su bitovi kako bi ispisali slovo e.Slovo, tj. poruka je skrivena u takozvanoj stego slici
+ <p align="center">  
+<img width="940" height="314" alt="image" src="https://github.com/user-attachments/assets/8d664675-eb0d-48ae-8dfe-234185cdf363" /></p>
+<p align="center"><em>Slika 9: Poruka sakrivena u stego slici</em></p>
 
 5. Pošalji stego sliku primatelju. Primatelj može primjeniti algoritam za otkrivanje promjena u vrijednostima piksela i izdvojiti iz slike skrivenu poruku.
 
 Unatoč jednostavnosti, LSB metoda ima ozbiljna ograničenja. LSB steganografija skoro nikad ne radi pouzdano na .jpg formatu slike, ali radi na .png formatu, koji je format bez gubitaka. No ključno je to što postoji granica koliko se najmanje značajnih bitova u pikselima može izmijeniti, a da slika ne izgubi kvalitetu. Ako se pokuša sakriti previše podataka, slika se vidljivo degradira što može otkriti čovjek ili specijalizirani forenzički softver. Kako bipromjena bila neprimjetna, steganografi koji koriste LSB metodu mogu manipulirati najviše 15% sadržaja slike.
 
-Richard Eason i Eiji Kawaguchi su u radu Principles and Applications of BPCS-Steganography prikazali na koji način se kapacitet skrivanja podataka može povećati čak na 60%. Kako bi unaprijedili tehniku najmanje značajnog bita (LSB), Eason i Kawaguchi iskoristili su ograničenja ljudskog vida. Radi postizanja maksimalne perceptivne neprimjetnosti osmislili su metodu dijeljenja slike na dva različita područja, informativno područje i područje šuma. Informativno područje čini jednostavan uzorak koji oko može trenutačno prepoznati, a područje šuma čini toliko složen uzorak da ga mozak zapravo ne registrira u potpunosti. Dobar primjer područja šuma bio bi pijesak. Sitna zrna u ogromnim količinama su prvelika količina skoro jednakih objekata da bi ih ljudski mozak mogao razlikovati. Informativno područje bila bi ljubičasta lopta na pjesku koja se jasno istiće u okolini. Na mikroskopskoj razini područja informacija i šuma mogu se matematički mapirati.
+Richard Eason i Eiji Kawaguchi su u radu Principles and Applications of BPCS-Steganography prikazali na koji način se kapacitet skrivanja podataka može povećati čak na 60%. Kako bi unaprijedili tehniku najmanje značajnog bita (LSB), Eason i Kawaguchi iskoristili su ograničenja ljudskog vida. Radi postizanja maksimalne perceptivne neprimjetnosti osmislili su metodu dijeljenja slike na dva različita područja, informativno područje i područje šuma. Informativno područje čini jednostavan uzorak koji oko može trenutačno prepoznati, a područje šuma čini toliko složen uzorak da ga mozak zapravo ne registrira u potpunosti.
 
-<img width="940" height="309" alt="image" src="https://github.com/user-attachments/assets/9e3ed45a-0376-4d5c-903f-b48ee1261be1" />
+Dobar primjer područja šuma bio bi pijesak. Sitna zrna u ogromnim količinama su prvelika količina skoro jednakih objekata da bi ih ljudski mozak mogao razlikovati. Informativno područje bila bi ljubičasta lopta na pjesku koja se jasno istiće u okolini. Na mikroskopskoj razini područja informacija i šuma mogu se matematički mapirati.
+<p align="center">
+<img width="940" height="309" alt="image" src="https://github.com/user-attachments/assets/9e3ed45a-0376-4d5c-903f-b48ee1261be1" /></p>
+<p align="center"><em>Slika 10: Primjeri  područja šuma i informativnog područja</em></p>
 
 Steganografi dijele sliku na 8 razina kako bi mapirali ove regije. 
-
-<img width="940" height="601" alt="image" src="https://github.com/user-attachments/assets/1fa2ff71-1d30-45ae-95bc-3155afe17d32" />
+<p align="center">
+<img width="940" height="601" alt="image" src="https://github.com/user-attachments/assets/1fa2ff71-1d30-45ae-95bc-3155afe17d32" /></p>
+<p align="center"><em>Slika 11: Podjela na razine</em></p>
 
 Kada se slika rastavi na bitove postaje jednostavnije razlikovati informativna područja i područja šuma. Za jasnije granice preko slike se postavlja mreža, a svakoj ćeliji se dodjeljuje vrijednost šuma. To se postiže mjerenjem kontrasta piksela unutar svakog segmenta (eng. *Border value*).
 
 Eason i Kawaguchi predložili su umetanje tajnih podataka u dijelove slike s područjima šuma, koja često čine oko 45% slike. Kako bi se informativno područje tajne slike prikrilo u području šuma nositeljske slike, ono se mora pretvoriti u šum.
-
-<img width="940" height="295" alt="image" src="https://github.com/user-attachments/assets/9057f46f-7c32-4db9-ad2e-b713b855d574" />
+<p align="center">
+<img width="940" height="295" alt="image" src="https://github.com/user-attachments/assets/9057f46f-7c32-4db9-ad2e-b713b855d574" /></p>
+<p align="center"><em>Slika 12: Usklađivanje s uzorcima slike</em></p>
 
 U gornjem primjeru slika 1 je isječak početne slike koji se jasno ističe. Usklađivanjem s prednjim uzorkom nositeljske slike prikazanim na slici 4 i stražnjim uzorkom, prikazanim na slici 5, taj se isječak može neprimjetno uklopiti. Ovo je zahtjevan proces za koji je potreban softverski paket poput Matlaba.
 
@@ -488,122 +495,152 @@ Ovakav praktični pristup omogućio je jasnu ilustraciju koncepta digitalne steg
 
 ## 3.3. Praktični dio
 
-U sklopu praktičnog dijela rada odabrane su originalne slike u koje je pomoću alata Stegano u terminalo uvrštena poruka, tekstualna datoteka te zvučni zapis. Uz to su napravljene i dvije skripte za automatizaciju umetanja poruke i dešifriranja iste iz izmjenjene slike.
+U praktičnom dijelu rada demonstrirane su različite metode digitalne steganografije korištenjem alata Stegano u Linux terminalu. U odabrane slike umetnute su tri vrste sadržaja: kratka tekstualna poruka, tekstualna datoteka te zvučni zapis. Također su razvijene dvije jednostavne skripte za automatizaciju procesa umetanja i izdvajanja skrivenih podataka iz izmijenjenih slika. Time je omogućeno sustavno testiranje funkcionalnosti steganografskih tehnika te analiza njihovih ograničenja ovisno o formatu slike.
 
 ### 3.3.1. Umetanje poruke u terminalu
 
-Za primjer se koristi originalna slika sa dodjele diploma.
+Za početno testiranje korištena je fotografija snimljena povodom dodjele diploma. Izvorna slika prikazana je na Slikama 1 i 2, gdje je prva spremljena u .jpg, a druga u .png formatu. Ova razlika u formatima omogućila je evaluaciju ponašanja steganografskih tehnika pri radu s kompresiranim (.jpg) i nekompresiranim (.pdf) formatima.
+<p align="center">
+<img width="941" height="586" alt="image" src="https://github.com/user-attachments/assets/3b9574be-2047-466f-bd9f-ba55e768b128" /></p>
+<p align="center"><em>Slika 13: Originalna slika u .jpg formatu</em></p>
 
-<img width="941" height="586" alt="image" src="https://github.com/user-attachments/assets/3b9574be-2047-466f-bd9f-ba55e768b128" />
+<p align="center">
+<img width="939" height="422" alt="image" src="https://github.com/user-attachments/assets/b4ac3d0b-525b-499d-b1ef-b3843361a69a" /></p>
+<p align="center"><em>Slika 14: Originalna slika u .png formatu</em></p>
 
-<img width="939" height="422" alt="image" src="https://github.com/user-attachments/assets/b4ac3d0b-525b-499d-b1ef-b3843361a69a" />
+Slika 1 (.jpg) imala je početnu veličinu 633,5 kB (633.463 bytes). Budući da Stegano omogućuje manipulaciju slikovnih datoteka putem terminala, alat je instaliran sljedećim naredbama:
 
-Slika 1 je u .jpg formatu, a druga u .png formatu kako bi se testiralo koje tehnike rade na oba, a koje samo na .png fotografijama.
-
-Za početak je preuzet stegano pomoću naredbi:
-
+```bash
 sudo apt install pipx
-
 pipx ensurepath
-
 pipx install stegano
+```
 
-Zatim je u fotografiju (1), veličine 633,5 kB (633.463 bytes), umetnuta tajna poruka. Za umetanje tajne poruke u sliku korištena je slijedeća naredba:
-<img width="940" height="36" alt="image" src="https://github.com/user-attachments/assets/83fac5a0-89ff-423b-b817-c59dd40520a1" />
+Nakon instalacije, u .jpg sliku umetnuta je jednostavna tekstualna poruka korištenjem LSB (*Least Significant Bit*) metode. U tu svrhu poslužila je naredba:
 
-Napravljen je novi .png file, veličine 2,3 MB (2.340.858 bytes), koji sadrži poruku.
+<p align="center">
+<img width="940" height="36" alt="image" src="https://github.com/user-attachments/assets/83fac5a0-89ff-423b-b817-c59dd40520a1" /></p>
+<p align="center"><em>Slika 14: Naredba za sakrivanje tajne poruke</em></p>
 
-<img width="1695" height="1057" alt="poruka" src="https://github.com/user-attachments/assets/2b8106f8-740d-4dc4-a25b-5a26bf4d0735" />
+Izvršavanjem naredbe generirana je nova datoteka poruka.png, veličine 2,3 MB (2.340.858 bytes). Vidljivo povećanje veličine rezultat je pretvorbe iz *.jpg* u *.png* format, budući da Stegano ne može pouzdano primijeniti LSB metodu na *.jpg* slike zbog njihove destruktivne kompresije. Dobivena datoteka zadržava originalni vizualni prikaz, ali sadrži uspješno ugniježđenu poruku.
 
-Poruka zatim može biti otkrivena iz slike korištenjem naredbe:
+<p align="center">
+<img width="1695" height="1057" alt="poruka" src="https://github.com/user-attachments/assets/2b8106f8-740d-4dc4-a25b-5a26bf4d0735" /></p>
+<p align="center"><em>Slika 15: Dobivena .png slika sa sakrivenom porukom</em></p>
 
-<img width="607" height="38" alt="image" src="https://github.com/user-attachments/assets/b1d57901-3e61-4582-8109-409c8e2e4da2" />
+Skrivena poruka može se iz slike izdvojiti korištenjem naredbe:
+<p align="center">
+<img width="607" height="38" alt="image" src="https://github.com/user-attachments/assets/b1d57901-3e61-4582-8109-409c8e2e4da2" /></p>
+<p align="center"><em>Slika 16: Naredba za isčitavanje tajne poruke</em></p>
 
-Kao što se može primjetiti iz veličine datoteka, rad sa .jpg formatom nije dobar ni optimalan, pa je u nastavku sve rađeno na .png datotekama.
+Rezultati pokazuju da se zbog inherentnih ograničenja *.jpg* formata tehnika LSB-a ne može učinkovito primijeniti bez konverzije u *.png*, što je potvrđeno značajnim skokom u veličini datoteke. Zbog toga se u daljnjim testiranjima isključivo primjenjuje *.png* format.
 
 ### 3.3.2. Umetanje .txt datoteke u fotografiju
 
-Zatim je u forografiju (2), veličine 7,7 MB (7.745.746 bytes), dodana tekstualna datoteka koja sadrži tekst *Lorem ipsum*. 
+U drugom dijelu eksperimenta korištena je izvorna *.png* fotografija (Slika 2) veličine 7,7 MB (7.745.746 bytes). Ovaj put cilj nije bio umetnuti kratku poruku, nego cijelu tekstualnu datoteku koja sadrži standardizirani sadržaj *Lorem ipsum*.
+<p align="center">
+<img width="1280" height="800" alt="image" src="https://github.com/user-attachments/assets/3bf0015d-6a96-443e-a1da-9acdc78cae1c" /></p>
+<p align="center"><em>Slika 17: Tekstualna datoteka sa Lorem ipsum sadržajem</em></p>
 
-<img width="1280" height="800" alt="image" src="https://github.com/user-attachments/assets/3bf0015d-6a96-443e-a1da-9acdc78cae1c" />
+Umetanje datoteke obavljeno je sljedećom terminalskom naredbom:
+<p align="center">
+<img width="752" height="23" alt="image" src="https://github.com/user-attachments/assets/15d821cf-9c29-4840-832a-cc8a7a2b0cbd" /></p>
+<p align="center"><em>Slika 18: Naredba za sakrivanje tekstualne datoteke u sliku</em></p>
 
-<img width="752" height="23" alt="image" src="https://github.com/user-attachments/assets/15d821cf-9c29-4840-832a-cc8a7a2b0cbd" />
+Nakon izvršavanja naredbe kreirana je nova datoteka sakrrivenFile.png, veličine 7,8 MB (7.841.829 bytes). Primjetno je da se veličina slike povećala za svega približno 96 kB, što je zanemarljivo u odnosu na veličinu izvorne datoteke. Takva minimalna razlika potvrđuje da je LSB metoda izmijenila samo najmanje značajne bitove pojedinih piksela, bez ikakvog uočljivog utjecaja na vizualni sadržaj slike.
+<p align="center">
+<img width="4096" height="1840" alt="sakrrivenFile" src="https://github.com/user-attachments/assets/4d95d417-453b-422a-bcec-3eb030e0fcba" /></p>
+<p align="center"><em>Slika 19: Modificirana stego-slika sa sakrivenom tekstualnom datotekom</em>
 
-Kreirana je nova datoteka sa nazivom sakrrivenFile.png, veličine 7,8 MB (7.841.829 bytes).
+Time se potvrđuje ključna prednost steganografskih tehnika temeljenih na LSB metodi:
+skriveni sadržaj ostaje neprimjetan i neotkriven standardnim vizualnim pregledom, dok istovremeno ne narušava strukturu datoteke u mjeri koja bi izazvala sumnju.
 
-<img width="4096" height="1840" alt="sakrrivenFile" src="https://github.com/user-attachments/assets/4d95d417-453b-422a-bcec-3eb030e0fcba" />
+Za izdvajanje ugradene datoteke korištena je naredba:
+<p align="center">
+<img width="602" height="23" alt="image" src="https://github.com/user-attachments/assets/cf98ce95-e563-4f2f-acda-3c07644c86eb" /></p>
+<p align="center"><em>Slika 20: Naredba za otkrivanje sakrivenog tekstualnog sadržaja</em></p>
 
-Uočena je minimalna promjena veličine .png datoteke nakon umetanja teksta, što ukazuje na to da je LSB metoda izmijenila samo najmanje značajne bitove slike bez vidljivog utjecaja na njezin vizualni prikaz. Takva zanemariva razlika potvrđuje uspješnost i neprimjetnost steganografskog postupka, jer skriveni sadržaj ostaje nedetektiran standardnim vizualnim i površinskim analizama.
-
-Poruka je otkrivena pomoću naredbe:
-
-<img width="602" height="23" alt="image" src="https://github.com/user-attachments/assets/cf98ce95-e563-4f2f-acda-3c07644c86eb" />
-
-
-te je kreirana datoteka sa dešifriranom porukom:
-
-<img width="602" height="228" alt="image" src="https://github.com/user-attachments/assets/d9c73ccc-f81f-4ca6-aaae-a1e31eb6fa26" />
-
+Izvršavanjem naredbe generirana je tekstualna datoteka s uspješno dešifriranim sadržajem Lorem ipsum teksta, što potvrđuje ispravnost postupka i funkcionalnost alata.
+<p align="center">
+<img width="602" height="228" alt="image" src="https://github.com/user-attachments/assets/d9c73ccc-f81f-4ca6-aaae-a1e31eb6fa26" /></p>
+<p align="center"><em>Slika 21: Naredba i otkriveni tekstualni sadržaj</em></p>
 
 ### 3.3.3. Umetanje zvučnog zapisa u fotografiju
 
-Zvučni zapis umetnut je u sliku tako da je najprije pretvoren u Base64 tekstualni oblik, čime je omogućeno njegovo pouzdano kodiranje i prijenos unutar LSB strukture PNG slike. Ovakav pristup korišten je zato što LSB steganografija izvorno prihvaća samo tekstualne podatke, pa Base64 konverzija omogućuje skrivanje bilo kojeg binarnog sadržaja, uključujući audio datoteke, bez gubitka informacija i uz očuvanje vizualne neprimjetnosti slike. 
+Zvučni zapis *glasovni.m4a* umetnut je u sliku tako da je najprije pretvoren u Base64 tekstualni oblik, čime je omogućeno njegovo pouzdano kodiranje i prijenos unutar LSB strukture *.png* slike. Ovakav pristup korišten je zato što LSB steganografija izvorno prihvaća samo tekstualne podatke, pa Base64 konverzija omogućuje skrivanje bilo kojeg binarnog sadržaja, uključujući audio datoteke, bez gubitka informacija i uz očuvanje vizualne neprimjetnosti slike. 
 
 Zvučni zapis pretvoren je u b64 format
-
-<img width="412" height="19" alt="image" src="https://github.com/user-attachments/assets/867955dd-6f72-4d8e-b48a-630372b4606c" />
-
-<img width="1280" height="800" alt="image" src="https://github.com/user-attachments/assets/27727893-3770-4dbc-a48f-0f562c2d4e67" />
+<p align="center">
+<img width="412" height="19" alt="image" src="https://github.com/user-attachments/assets/867955dd-6f72-4d8e-b48a-630372b4606c" /></p>
+<p align="center"><em>Slika 22: Naredba za pretvaranje zvučnog zapisa u b64 format</em></p>
+<p align="center">
+<img width="1280" height="800" alt="image" src="https://github.com/user-attachments/assets/27727893-3770-4dbc-a48f-0f562c2d4e67" /></p>
+<p align="center"><em>Slika 23: b64 format zvučnog zapisa</em></p>
 
 zatim je dobivena datoteka sakrivena unutar fotografije (2) veličine 7,7 MB (7.745.746 bytes).
-
-<img width="602" height="22" alt="image" src="https://github.com/user-attachments/assets/76e20dd8-08f2-45cf-abba-a818ae204d11" />
+<p align="center">
+<img width="602" height="22" alt="image" src="https://github.com/user-attachments/assets/76e20dd8-08f2-45cf-abba-a818ae204d11" /></p>
+<p align="center"><em>Slika 24: Naredba za sakrivanje b64 zvučnog zapisa u sliku</em></p>
 
 Dobivena datoteka vizualno nema promjena od originalne slike, no njih možemo primjetiti u promjeni veličine na 8,1 MB (8.119.714 bytes). Razlog tome je veličina zvučnog zapisa. Iz tog razloga je dobro koristiti originalne fotografije kako drugi ne bi mogli usporediti uređivanu fotografiju sa originalnom, što mogu sa javno dostupnim slikama.
-
-<img width="4096" height="1840" alt="stereo" src="https://github.com/user-attachments/assets/a38f8382-8f69-4373-9ac7-484da97b7bd6" />
+<p align="center">
+<img width="4096" height="1840" alt="stereo" src="https://github.com/user-attachments/assets/a38f8382-8f69-4373-9ac7-484da97b7bd6" /></p>
+<p align="center"><em>Slika 25: Modificirana stego-slika sa sakrivenim zvučnim zapisom</em></p>
 
 Glasovna poruka zatim je izvučena iz fotografije na slijedeći način:
+<p align="center">
+<img width="582" height="35" alt="image" src="https://github.com/user-attachments/assets/fccfcfae-3be1-4d85-a9e9-1628098f3b08" /></p>
+<p align="center"><em>Slika 26: Naredba za otkrivanje zvučnog zapisa iz stego-slike</em></p>
 
-<img width="582" height="35" alt="image" src="https://github.com/user-attachments/assets/fccfcfae-3be1-4d85-a9e9-1628098f3b08" />
+Dobivena je nova *obnovljeni.m4a* datoteka koja je po svemu jednaka originalnom zvučnom zapisu koji je sakriven u sliku.
 
 ## 3.4. Automatizacija postupka ubacivanja i isčitavanja poruka unutar slikovnih datoteka
 
 U sklopu praktičnog dijela rada razvijen je skup Bash skripti namijenjenih automatizaciji postupka ubacivanja i izdvajanja skrivenih podataka iz slikovnih datoteka primjenom LSB steganografije. Ove skripte predstavljaju funkcionalni sloj nad postojećim Stegano alatom te omogućuju jednostavnije, ponovljivo i pouzdano izvođenje kompleksnih steganografskih operacija bez potrebe za ručnim unosom dugih naredbi ili prethodnim poznavanjem tehničkih detalja implementacije.
 
 Kreiranje skripte:
-
-<img width="343" height="20" alt="image" src="https://github.com/user-attachments/assets/dd28127a-ebf5-4998-ae8e-875e26a0337a" />
+<p align="center">
+<img width="343" height="20" alt="image" src="https://github.com/user-attachments/assets/dd28127a-ebf5-4998-ae8e-875e26a0337a" /></p>
+<p align="center"><em>Slika 27: Kreiranje skripte za sakrivanje poruka u stego-sliku</em>
 
 Proces ubacivanja podataka temelji se na pretvaranju bilo koje ulazne datoteke, a to mogu biti tekstualni dokumenti, binarna datoteka ili zvučni zapis u Base64 formatu. Ovaj korak nužan je jer LSB metoda može obrađivati samo tekstualne nizove, dok se binarni podaci u izvornom obliku ne mogu izravno umetati u slikovne piksele. Nakon pretvorbe u Base64, skripta automatizirano poziva Stegano alat kako bi modificirala najmanje značajne bitove (LSB) piksela u PNG slici te time sigurno smjestila poruku unutar vizualno neprimjetnog dijela fotografije. Time se uklanja mogućnost ljudske pogreške u ručnom unosu naredbi, a čitav proces postaje skalabilan i primjenjiv u različitim scenarijima.
 
-Skripta za ubacivanje datoteke s porukom unutar slikovne datoteke:
-
-<img width="487" height="334" alt="image" src="https://github.com/user-attachments/assets/66e14534-d1fe-4b65-91da-1aaa46b4c759" />
+Skripta za ubacivanje datoteke s porukom unutar slikovne datoteke *sakrivanje.sh*:
+<p align="center">
+<img width="487" height="334" alt="image" src="https://github.com/user-attachments/assets/66e14534-d1fe-4b65-91da-1aaa46b4c759" /></p>
+<p align="center"><em>Slika 28: Skripta za sakrivanje u stego-sliku</em>
+    
+Proces umetanja podataka temelji se na pretvaranju ulazne datoteke, bilo da je riječ o tekstualnom dokumentu, binarnoj datoteci ili audio zapisu, u *Base64* format. Ova konverzija nužna je zato što LSB metoda može pouzdano obrađivati samo tekstualne nizove, a binarni se sadržaji u izvornom obliku ne mogu izravno umetati u pikselne vrijednosti. Nakon pretvorbe, skripta poziva Stegano alat koji izmjenjuje najmanje značajne bitove (LSB) u *.png* slici i na taj način sigurno smješta poruku unutar vizualno neprimjetnih komponenti slike. Automatizacija uklanja mogućnost ljudske pogreške te omogućuje skalabilnu primjenu postupka u različitim okruženjima.
 
 Ubacivanje poruke:
-
-<img width="602" height="42" alt="image" src="https://github.com/user-attachments/assets/560d6bb5-09f9-4975-8ff4-c2a139f019d6" />
+<p align="center">
+<img width="602" height="42" alt="image" src="https://github.com/user-attachments/assets/560d6bb5-09f9-4975-8ff4-c2a139f019d6" /></p>
+<p align="center"><em>Slika 29: Naredba za poziv skripte sakrivanje.sh</em></p>
 
 Dobivena je nova datoteka veličine 8,1 MB (8.119.714 bytes):
+<p align="center">
+<img width="4096" height="1840" alt="automatski" src="https://github.com/user-attachments/assets/13e0b880-8adf-4a26-9921-ed6e578e0775" /></p>
+<p align="center"><em>Slika 30: Modificirana stego-slika sa umetnutim zvučnim zapisem pomoću kreirane skripte</em></p>
 
-<img width="4096" height="1840" alt="automatski" src="https://github.com/user-attachments/assets/13e0b880-8adf-4a26-9921-ed6e578e0775" />
-
-Skripta za isčitavanje podataka djeluje obrnuto. Iz odabrane stego-slike ekstrahira skriveni Base64 zapis te ga ponovno dekodira u izvornu binarnu datoteku. Na ovaj način omogućuje se pouzdano vraćanje originalnog sadržaja, čime se potvrđuje funkcionalnost i cjelovitost steganografskog procesa. Automatizacija osigurava da se svi koraci, od identifikacije skrivenih bitova do rekonstrukcije datoteke, odvijaju deterministički i bez ručnih intervencija.
+Skripta za isčitavanje podataka djeluje obrnuto. Iz odabrane stego-slike ekstrahira skriveni *Base64* zapis te ga ponovno dekodira u izvornu binarnu datoteku. Na ovaj način omogućuje se pouzdano vraćanje originalnog sadržaja, čime se potvrđuje funkcionalnost i cjelovitost steganografskog procesa. Automatizacija osigurava da se svi koraci, od identifikacije skrivenih bitova do rekonstrukcije datoteke, odvijaju deterministički i bez ručnih intervencija.
 
 Skripta za otkrivanje poruke:
-
-<img width="598" height="398" alt="image" src="https://github.com/user-attachments/assets/8bdd0819-7530-496d-adc1-4176331a34e5" />
+<p align="center">
+<img width="598" height="398" alt="image" src="https://github.com/user-attachments/assets/8bdd0819-7530-496d-adc1-4176331a34e5" /></p>
+<p align="center"><em>Slika 31: Skripta za otkrivanje poruke iz stego-slike</em></p>
 
 Pokretanje skripte:
-
-<img width="602" height="80" alt="image" src="https://github.com/user-attachments/assets/a52b00e0-dca3-4f91-9313-17310191a7e0" />
+<p align="center">
+<img width="602" height="80" alt="image" src="https://github.com/user-attachments/assets/a52b00e0-dca3-4f91-9313-17310191a7e0" /></p>
+<p align="center"><em>Slika 32: Naredbe za kreiranje i pozivanje otkrivanje.sh skripte</em></p>
 
 Korištenje ovakvih skripti značajno povećava praktičnu vrijednost steganografskih tehnika u stvarnim okruženjima. Automatizacija smanjuje tehničku složenost za krajnjeg korisnika, ubrzava postupak i omogućuje standardizaciju procesa, što je posebno važno u sigurnosnim simulacijama i forenzičkim analizama. Istovremeno, skripte demonstriraju kako se steganografija može integrirati u šire automatizirane sustave za prijenos osjetljivih podataka te naglašavaju potencijal ove tehnike kao dijela naprednih sigurnosnih i komunikacijskih mehanizama.
 
-Skripte su testirane i sa umetanjem .txt datoteka. Umetanjem dobbivena je fotografija veličine 7,8 MB (7.838.862 bytes). Sakrivanje pomoću skripte ili ručno nije učinilo razliku u veličini dobivenih datoteka.
+Skripte su testirane i sa umetanjem *.txt* datoteka. Umetanjem dobbivena je fotografija veličine 7,8 MB (7.838.862 bytes). Sakrivanje pomoću skripte ili ručno nije učinilo razliku u veličini dobivenih datoteka.
 
-<img width="4096" height="1840" alt="sakrivamTekst" src="https://github.com/user-attachments/assets/4cb0751e-ed16-4742-9b37-eef0bc0889de" />
+<p align="center">
+<img width="4096" height="1840" alt="sakrivamTekst" src="https://github.com/user-attachments/assets/4cb0751e-ed16-4742-9b37-eef0bc0889de" /></p>
+<p align="center"><em>Slika 33: Modificirana stego-slika sa umetnutim tekstualnim zapisem pomoću kreirane skripte</em></p>
 
 
 # 4. Covert timing channels - Marin Vabec
