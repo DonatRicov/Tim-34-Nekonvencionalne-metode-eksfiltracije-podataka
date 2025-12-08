@@ -1042,6 +1042,11 @@ Na kraju, korisno je zapamtiti dvije provjerene forenzičke heuristike: prvo, da
 
 ## 5.2. Praktični dio
 
+U praktičnom dijelu demonstrirano je slanje e-pošte korištenjem Python modula smtplib u kontroliranom laboratorijskom okruženju. Izrađena je Python skripta koja kreira poruku tipa MIME te joj dodaje prilagođeno zaglavlje X-Lab-Tag (test marker) radi lakše identifikacije poruka u mrežnom prometu i kasnijoj analizi.
+
+E-pošta se šalje putem SMTP protokola prema lokalnom SMTP “sink” serveru (MailHog), a mrežni promet je istovremeno sniman u .pcap datoteku. Nakon slanja poruke, snimljeni promet analiziran je u Wiresharku. U paketima su vidljive SMTP naredbe (npr. EHLO, MAIL FROM, RCPT TO, DATA) i sadržaj poruke unutar SMTP DATA faze. Unutar sadržaja e-pošte jasno se vidi prilagođeno zaglavlje X-Lab-Tag, što potvrđuje da se korisnički definirana zaglavlja prenose kao dio e-mail poruke i mogu se uočiti/detektirati u prometu kada se koristi nešifrirani SMTP u laboratoriju.
+
+
 # 6. Zaključak
 Kroz ovaj projektni zadatak, sustavno su istražene teorijske osnove i praktična primjena četiri nekonvencionalne metode eksfiltracije podataka. Kroz detaljan teorijski pregled i izradu funkcionalnih praktičnih primjera, demonstrirano je kako se ove tehnike mogu iskoristiti za prikriveni prijenos podataka, često zaobilazeći uobičajene sigurnosne mjere i mehanizme. Praktičnim simulacijama je potvrđena funkcionalnost svake metode.
 Sve metode obrađene u radu, DNS tunneling, steganografija, covert timing channels i zlouporaba SMTP protokola, na neki način iskorištavaju legitimne protokole i formate datoteka koji odstupa od njihove primarne namjene, ali ne nužno i od njihovih tehničkih specifikacija. Baš iz tog razloga je otkrivanje ovih metoda posebno zahtjevno jer zahtijeva naprednu analizu ponašanja (npr. analizu DNS prometa, statističku analizu slikovnih datoteka, praćenje vremenskih obrazaca, detaljnu analizu SMTP paketa) umjesto jednostavnog filtriranja ili analize primarnog sadržaja poslanih/primljenih paketa ili datoteka.
