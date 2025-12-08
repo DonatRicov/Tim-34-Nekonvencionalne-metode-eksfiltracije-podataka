@@ -1046,6 +1046,27 @@ U praktičnom dijelu demonstrirano je slanje e-pošte korištenjem Python modula
 
 E-pošta se šalje putem SMTP protokola prema lokalnom SMTP “sink” serveru (MailHog), a mrežni promet je istovremeno sniman u .pcap datoteku. Nakon slanja poruke, snimljeni promet analiziran je u Wiresharku. U paketima su vidljive SMTP naredbe (npr. EHLO, MAIL FROM, RCPT TO, DATA) i sadržaj poruke unutar SMTP DATA faze. Unutar sadržaja e-pošte jasno se vidi prilagođeno zaglavlje X-Lab-Tag, što potvrđuje da se korisnički definirana zaglavlja prenose kao dio e-mail poruke i mogu se uočiti/detektirati u prometu kada se koristi nešifrirani SMTP u laboratoriju.
 
+### 5.2.1. Cilj
+
+Cilj praktičnog dijela zadatka je demonstrirati slanje e‑pošte putem SMTP protokola u kontroliranom laboratorijskom okruženju te analizirati snimljeni mrežni promet. Poseban fokus je na potvrdi da se zaglavlja e‑pošte (uključujući prilagođena zaglavlja) putuju unutar SMTP DATA faze i da su vidljiva u snimci prometa kada se koristi nešifrirani SMTP u labu.
+
+### 5.2.2. Korišteni alati
+
+MailHogje alat za testiranje e‑pošte koji se ponaša kao lokalni SMTP server ("sink"): prima poruke, ali ih ne prosljeđuje dalje na internet. Poruke pohranjuje i prikazuje kroz web sučelje, pa je idealan za laboratorijske vježbe i sigurnu demonstraciju slanja e‑pošte.
+
+
+Wiresharkje alat za snimanje i analizu mrežnog prometa (packet analyzer). Omogućuje filtriranje prometa po protokolima/portovima i detaljan uvid u pakete. U ovom zadatku koristi se za prikaz SMTP komunikacije i pregled cijelog razgovora kroz opciju "Follow TCP Stream".
+
+### 5.2.3. Postavljanje okruženja
+izveden u Oracle VirtualBox okruženju s dvije virtualne mašine povezane preko Host‑Only mreže:
+• Mint-Client (pošiljatelj): 192.168.234.11
+• Mint-MailServer (MailHog): 192.168.234.10
+žna konfiguracija VM‑ova:
+• Adapter 1: NAT (internet za instalaciju paketa)
+• Adapter 2: Host‑Only (lab mreža za komunikaciju između VM‑ova)
+servisi:
+• SMTP: 192.168.234.10:1025
+• Web UI: http://192.168.234.10:8025
 
 # 6. Zaključak
 Kroz ovaj projektni zadatak, sustavno su istražene teorijske osnove i praktična primjena četiri nekonvencionalne metode eksfiltracije podataka. Kroz detaljan teorijski pregled i izradu funkcionalnih praktičnih primjera, demonstrirano je kako se ove tehnike mogu iskoristiti za prikriveni prijenos podataka, često zaobilazeći uobičajene sigurnosne mjere i mehanizme. Praktičnim simulacijama je potvrđena funkcionalnost svake metode.
