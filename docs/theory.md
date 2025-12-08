@@ -409,6 +409,111 @@ Ovaj dio analize pokazuje da je implementirana metoda DNS tunnelinga funkcionaln
 
 
 # 3. Steganografija - Lana Maček
+Steganografija je vrsta prikrivene komunikacije usko povezana s kriptografijom. Kriptografija predstavlja znanstvenu disciplinu koja se bavi zapisivanjem informacija u tajnom kodu ili šiframa. Podaci koji se šalju od pošiljatelja prema primatelju šifriraju se tako da ih može dešifrirati jedino ovlašteni primatelj koji posjeduje odgovarajući ključ za pretvaranje šifriranog sadržaja u razumljive podatke. Glavni nedostatak kriptografije jest to što je šifrirani sadržaj lako prepoznatljiv, čime se potencijalnom napadaču signalizira postojanje osjetljivih informacija koje bi mogao pokušati dešifrirati.
+
+Za razliku od kriptografije, steganografija nudi prednost time što skriva samo postojanje poruke. Steganografskim metodama informacije se ugrađuju u neki nositelj podataka na način koji ne otkriva da komunikacija uopće postoji, što znatno otežava njihovo otkrivanje, zlouporabu ili presretanje.
+
+#### Povijest steganografije
+Steganografija započinje davno prije postojanja računala i digitalnih tehnologija. Od svojih najranijih oblika služila je kao sredstvo tajne komunikacije između dviju strana, pri čemu treća osoba ne bi bila ni svjesna da razmjena informacija postoji.
+
+440-ih godina prije krista u Grčkoj pojavljuje se jedan od prvih načina steganografije. Grčki vođa Histijej (eng. *Histiaeus*) obrijao je glavu osobe te na nju ispisao poruku. Kada je kosa osobe narasla poruka je bila potpuno sakrivena. Sluga je tada mogao prenjeti tajnu poruku drugoj strani bez da ona bude otkrivena od strane neprijatelja. 
+
+1499.godine Johannes Trithemius napisao je knjigu Steganographia koja je naizgled govorila o magiji. Pri dešifriranju otkriveno je da je knjiga zapravo govorila o kripto i steganografiji. 
+
+1941.godine Alexis Casdagli bio je zarobljen u Drugom Svijetskom ratu od strane Njemačke. U zarobljeništvu je počeo izrađivati uvez (*Casdaglijev vez*). Uz rub samog platna na kojem su se nalazili simboli nacizma, američki orlovi, britanski lavovi i sovjetski srp i čekić, uvezao je niz linija i točaka koje su ispisivale poruku u Morsevom kodu. 
+
+Ovo su samo neki od mnogih primjera steganografije prije digitalnog razvojay. 1993. godine zabilježen je jedan od prvih primjera digitalne steganografije. U kriminalističkoj istrazi je na računalu Ramzija Youseffa pronađena kolekcija enkriptiranih datoteka za koje je bilo potrbno više od godinu dana da bude dešifriran barem dio informacija. Unutar datoteka nalazili su se planovi za napade, kemijske formule i drudge inkriminirajuće informacije. 
+
+#### Digitalna steganografija
+
+Iako je steganografija korištena od strane kriminalaca i terorista ona, poput svake druge vrste kriptografije, služi širokom spektru korisnika. Upotrebljavaju je obavještajne službe, umjetnici, aktivisti, hakeri, programeri, tvorci zagonetki i mnogi drugi. Kako su se steganografske tehnike razvijale, istodobno su se razvijale i metode za procjenu njihove otpornosti. Za potrebe analize, steganografska zajednica razvila je svojevrsnu matricu rizika poznatu kao tetraedar kompromisa.
+
+Četiri vrha tetraedra predstavljaju ključne zahtjeve za prikrivenu transmisiju podataka. Kompromis (eng. *trade-off*) označuje da naglašavanje jednog od tih zahtjeva uvijek na neki način narušava preostala tri.
+1. Robusnost: Svojstva skrivene poruke koja osiguravaju da ona preživi sve nenamjerne obrade podataka tijekom prijenosa od pošiljatelja do primatelja.
+2. Sigurnost: Ugrađena zaštita od pokušaja neprijateljske strane da ukloni ili onesposobi skrivenu poruku.
+3. Neprimjetljivost: Sposobnost skrivene poruke da postoji bez narušavanja perceptivnog sadržaja izvorne slike.
+4. Kapacitet: Količina informacija koje se mogu sakriti unutar nositeljske slike.
+   
+U nekim izvorima on je naveden i kao Trokut kompromisa. U tom slučaju nije uključena sigurnost kao *trade-off* faktor.
+
+<img width="481" height="400" alt="image" src="https://github.com/user-attachments/assets/fae169b0-2024-4e19-8491-9b38464032e0" />
+
+#### Metode i tehnike steganografije
+
+Jedna od prvih vrsta digitalne steganografije bila je tehnika najmanje značajnog bita ili LSB (*eng. Least Significant Bit*). Tehnika je bila razvijena u 80-im godinama prošlog stoljeća.  U ovoj tehnici podaci su sakriveni unutar informacija najmanje važnih za kvalitetu slike. Na taj način minimizira se narušavanje izgleda slike. Područje slike s viškom informacija čine najmanje značajni bitovi svakog piksela. Kako bi proveli LBS tehniku moramo pratiti pet koraka:
+1. Odabrati sliku na kojoj će biti sakrivena informacija. Idealna je originalna slika jer se u promjeni javno dostupne fotografije može izmijenjeni primjerak lako usporediti sa originalnom slikom te time kompromitirati sigurnost sakrivenih podataka.
+2. Sliku je potrebno pretvoriti u niz bitova (koji određuju boju piksela koji čine digitalnu sliku)
+3. Pronađi najmanje značajan bit svakog binarnog niza. Taj bit je krajnji desni bit u nizu. Ako se taj bit pretvori u 0 boja će i dalje biti skoro identična originalnoj.
+4. Napravi izmjene najmanje značajnih bitovatako da se pri njihovoj izolaciji i ponovnom sastavljanu ispiše neka poruka. U slici prikazanoj ispod promjenjeni su bitovi kako bi ispisali slovo e.Slovo, tj. Poruka je skrivena u takozvanoj stego slici
+   
+<img width="940" height="314" alt="image" src="https://github.com/user-attachments/assets/8d664675-eb0d-48ae-8dfe-234185cdf363" />
+
+5. Pošalji stego sliku primatelju. Primatelj može primjeniti algoritam za otkrivanje promjena u vrijednostima piksela i izdvojiti iz slike skrivenu poruku.
+
+Unatoč jednostavnosti, LSB metoda ima ozbiljna ograničenja. LSB steganografija skoro nikad ne radi pouzdano na .jpg formatu slike, ali radi na .png formatu, koji je format bez gubitaka. No ključno je to što postoji granica koliko se najmanje značajnih bitova u pikselima može izmijeniti, a da slika ne izgubi kvalitetu. Ako se pokuša sakriti previše podataka, slika se vidljivo degradira što može otkriti čovjek ili specijalizirani forenzički softver. Kako bipromjena bila neprimjetna, steganografi koji koriste LSB metodu mogu manipulirati najviše 15% sadržaja slike.
+
+Richard Eason i Eiji Kawaguchi su u radu Principles and Applications of BPCS-Steganography prikazali na koji način se kapacitet skrivanja podataka može povećati čak na 60%. Kako bi unaprijedili tehniku najmanje značajnog bita (LSB), Eason i Kawaguchi iskoristili su ograničenja ljudskog vida. Radi postizanja maksimalne perceptivne neprimjetnosti osmislili su metodu dijeljenja slike na dva različita područja, informativno područje i područje šuma. Informativno područje čini jednostavan uzorak koji oko može trenutačno prepoznati, a područje šuma čini toliko složen uzorak da ga mozak zapravo ne registrira u potpunosti. Dobar primjer područja šuma bio bi pijesak. Sitna zrna u ogromnim količinama su prvelika količina skoro jednakih objekata da bi ih ljudski mozak mogao razlikovati. Informativno područje bila bi ljubičasta lopta na pjesku koja se jasno istiće u okolini. Na mikroskopskoj razini područja informacija i šuma mogu se matematički mapirati.
+
+<img width="940" height="309" alt="image" src="https://github.com/user-attachments/assets/9e3ed45a-0376-4d5c-903f-b48ee1261be1" />
+
+Steganografi dijele sliku na 8 razina kako bi mapirali ove regije. 
+
+<img width="940" height="601" alt="image" src="https://github.com/user-attachments/assets/1fa2ff71-1d30-45ae-95bc-3155afe17d32" />
+
+Kada se slika rastavi na bitove postaje jednostavnije razlikovati informativna područja i područja šuma. Za jasnije granice preko slike se postavlja mreža, a svakoj ćeliji se dodjeljuje vrijednost šuma. To se postiže mjerenjem kontrasta piksela unutar svakog segmenta (eng. *Border value*).
+
+Eason i Kawaguchi predložili su umetanje tajnih podataka u dijelove slike s područjima šuma, koja često čine oko 45% slike. Kako bi se informativno područje tajne slike prikrilo u području šuma nositeljske slike, ono se mora pretvoriti u šum.
+
+<img width="940" height="295" alt="image" src="https://github.com/user-attachments/assets/9057f46f-7c32-4db9-ad2e-b713b855d574" />
+
+U gornjem primjeru slika 1 je isječak početne slike koji se jasno ističe. Usklađivanjem s prednjim uzorkom nositeljske slike prikazanim na slici 4 i stražnjim uzorkom, prikazanim na slici 5, taj se isječak može neprimjetno uklopiti. Ovo je zahtjevan proces za koji je potreban softverski paket poput Matlaba.
+
+#### Budućnost steganografije
+
+Sloj zamagljivanja (*eng. obfuscation layer*) potrebno je istaknuti u kontekstu digitalne forenzike. Ti slojevi pružaju dodatne razine zaštite od napadača. Što je slojeva više, poruka je manje uočljiva i više sigurna. Budućnost steganografije vjerojatno leži u sve debljim i neprozirnijim nizovima takvih slojeva. Međutim, najveće mogućnosti za budućnost steganografije nalaze se u dimenziji izvan ravnih slika. Sve do prije nekoliko godina tehnike su se uglavnom usredotočivale na ugrađivanje podataka mijenjanjem vrijednosti piksela. Porast dostupnosti 3D hardvera za CAD, virtualnu stvarnost, videoigre i 3D tiskanje usmjerio je pozornost steganografije prema korištenju 3D geometrije kao nositelja podataka.
+
+## 3.1. Plan izrade praktičnog dijela
+
+Praktični dio rada temelji se na izgradnji i simulaciji okruženja u kojem se demonstrira stvarno funkcioniranje digitalne steganografije. U ovoj fazi provedena će biti izrada, testiranje i analiza postupaka skrivanja podataka unutar digitalnih slika korištenjem LSB (*Least Significant Bit*) tehnike korištenjem Stegano alata te skripti razvijenih tijekom projekta. Naglasak je stavljen na generiranje, umetanje i izdvajanje skrivenih informacija, kao i na automatizaciju procesa putem Bash i Python skripti.
+
+## 3.2. Metode i tehnike rada
+
+U početnom koraku simulirano je skrivanje različitih vrsta podataka, od običnog teksta, tekstualnih datoteka, binarnih datoteka te audio zapisa (u .m4a obliku) pretvaranjem sadržaja u Base64 zapis i njegovim umetanje unutar LSB komponenti PNG slike. Time je praktično demonstrirano kako se uz minimalne vizualne promjene u slici može prenijeti značajna količina podataka bez detekcije golim okom.
+
+Nadalje, implementirana je automatizacija procesa sakrivanja i otkrivanja podataka izradom posebnih skripti (*sakrivanje.sh* i *otkrivanje.sh*) koje omogućuju korisniku sigurno i ponovljivo izvršavanje metoda steganografije. Time je stvoreno okruženje koje replicira realni napadački scenarij u kojem se podaci mogu slati prikriveni unutar naizgled benignih slika, uz minimalan trag na mreži i u sustavu.
+
+Također je prikazano kako izgledaju slike koje sadrže skrivene podatke kada se analiziraju pomoću alata za analizu i pregleda vizualnih artefakata, te je pojašnjeno zašto PNG format pogoduje LSB tehnici, dok JPG onemogućava pouzdano steganografsko skrivanje zbog gubitne kompresije.
+
+Ovakav praktični pristup omogućio je jasnu ilustraciju koncepta digitalne steganografije, uključujući ograničenja kapaciteta, utjecaj formata slike i nužnost enkripcije kod osjetljivih podataka. Uz to je demonstriran i potencijalni sigurnosni rizik za računalne sustave, budući da ovakve metode omogućuju prikriveni prijenos podataka koji izmiče tradicionalnim metodama detekcije. Detaljna simulacija zato predstavlja važan korak u razumijevanju tehničke izvedbe steganografskih napada, kao i njihove moguće uloge u kibernetičkim napadima i prijetnjama.
+
+## 3.3. Praktični dio
+
+U sklopu praktičnog dijela rada odabrane su originalne slike u koje je pomoću alata Stegano u terminalo uvrštena poruka, tekstualna datoteka te zvučni zapis. Uz to su napravljene i dvije skripte za automatizaciju umetanja poruke i dešifriranja iste iz izmjenjene slike.
+
+### 2.3.1. Umetanje poruke u terminalu
+
+Za primjer se koristi originalna slika sa dodjele diploma.
+
+<img width="941" height="586" alt="image" src="https://github.com/user-attachments/assets/3b9574be-2047-466f-bd9f-ba55e768b128" />
+
+<img width="939" height="422" alt="image" src="https://github.com/user-attachments/assets/b4ac3d0b-525b-499d-b1ef-b3843361a69a" />
+
+Slika 1 je u .jpg formatu, a druga u .png formatu kako bi se testiralo koje tehnike rade na oba, a koje samo na .png fotografijama.
+
+Za početak je preuzet stegano pomoću naredbi:
+
+sudo apt install pipx
+
+pipx ensurepath
+
+pipx install stegano
+
+Zatim je u fotografiju (1) umetnuta tajna poruka. Za umetanje tajne poruke u sliku korištena je slijedeća naredba:
+<img width="940" height="36" alt="image" src="https://github.com/user-attachments/assets/83fac5a0-89ff-423b-b817-c59dd40520a1" />
+
+Napravljen je novi .png file koji sadrži poruku.
+
+
 
 # 4. Covert timing channels - Marin Vabec
 
