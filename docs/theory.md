@@ -1,11 +1,10 @@
 # 1. Uvod
 
+Ovaj projektni zadatak bavi se istraživanjem teorijskih osnova i izradom praktičnih primjera nekonvencionalnih metoda eksfiltracije podataka promatranih iz perspektive sigurnosti informacijskih sustava. Ekfiltracija podataka (engl. data exfiltration) predstavlja krađu, neovlašteno uklanjanje ili premještanje bilo kakvih podataka s uređaja, poput računala, mobilnih telefona ili drugih digitalnih sustava. U literaturi se često koriste i termini poput data leakage ili data theft, a sama pojava može imati ozbiljne posljedice za pojedince i organizacije — od gubitka povjerljivih informacija, preko financijskih šteta, pa sve do dugoročne reputacijske ugroze (Fortinet, n.d.).
 
+U suvremenim informacijskim okruženjima, gdje se sigurnosne mjere i alati neprestano unapređuju, napadači sve češće posežu za nekonvencionalnim pristupima kako bi zaobišli standardne mehanizme detekcije. Upravo zato razumijevanje takvih tehnika postaje ključno za izgradnju otpornijih sigurnosnih sustava. Za razliku od klasičnih metoda eksfiltracije koje se temelje na izravnom prijenosu podataka putem poznatih komunikacijskih kanala, nekonvencionalne metode iskorištavaju neočekivane ili prikrivene komunikacijske puteve. To ih čini posebno izazovnima za detekciju te ističe važnost dubinske analize i praktične demonstracije.
 
-
-
-
-
+U ovom radu obrađuju se četiri takve metode: DNS tunneling, steganografija, zlouporaba SMTP protokola te covert timing channels. Svaka od ovih tehnika prikazana je kroz teorijski pregled i pripadajući praktični primjer koji ilustrira način funkcioniranja i potencijalne sigurnosne implikacije. Cilj rada jest pružiti jasno razumijevanje njihovih koncepata, prednosti i ograničenja, ali i naglasiti potrebu za razvojem naprednih detekcijskih mehanizama koji mogu odgovoriti na sve novonastajuće prijetnje u području kibernetičke sigurnosti.
 
 
 # 2. DNS Tunneling - Donat Ricov
@@ -1025,3 +1024,7 @@ Osim u samom terminalu, u Wiresharku možemo provjeriti da se iz snimljenog prom
 Navedenom analizom možemo zaključiti da je tajna poruka uistinu poslana i primljena, i gotovo je neprimjetna iz drugih perspektiva. U Wireshark pogledu se može vidjeti vrijeme dolaska svakog paketa, ali to samo po sebi nije dovoljno kako bi se otkrilo da uopće postoji tajna poruka.
 
 # 5. SMTP - Dino Primorac
+
+# Literatura i reference
+Fortinet. (n.d.). *What Is Data Exfiltration? And How Can You Prevent It?*  
+Preuzeto s: [https://www.fortinet.com/resources/cyberglossary/data-exfiltration](https://www.fortinet.com/resources/cyberglossary/data-exfiltration)
