@@ -28,7 +28,7 @@ Tijekom istraživanja i praktične implementacije nekonvencionalnih tehnika eksf
 
 - Testovi između virtualnih mašina (VM-ova) u kontroliranom okruženju pokazali su stabilnije rezultate nego u stvarnim mrežnim uvjetima.
 
-- Upotreba jednostavnih skripti u Pythonu i hping3 omogućila je simulaciju i dekodiranje uzoraka.
+- Upotreba jednostavnih skripti u Pythonu omogućila je simulaciju i dekodiranje uzoraka.
 
 - Ova metoda ima izuzetno malu propusnost.
 
