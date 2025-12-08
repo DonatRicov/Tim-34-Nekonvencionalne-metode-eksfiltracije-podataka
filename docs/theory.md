@@ -1102,6 +1102,14 @@ U inboxu su vidljive poslane poruke, a otvaranjem pojedine poruke moguće je vid
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot%205%20-%20hvatanje%20paketa.png?raw=true" />
 <p align="center"><em>Slika: tcpdump (start “listening on…” i/ili stop sa “packets captured”)</em></p>
 
+## Provjera primitka poruka (MailHog Web UI)
+
+Nakon izvršavanja skripte, otvoreno je MailHog web sučelje na adresi:
+
+http://192.168.234.10:8025
+
+U inboxu su vidljive poslane poruke, a otvaranjem pojedine poruke moguće je vidjeti sadržaj i zaglavlja, uključujući prilagođeno zaglavlje X-Lab-Tag
+
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot6%20-%20mailhog%20mail%20-%20uslikan%20izmijenjen%20header.png?raw=true" />
 <p align="center"><em>Slika: MailHog web UI (otvorena poruka + prikaz zaglavlja s X‑Lab‑Tag)</em></p>
 
