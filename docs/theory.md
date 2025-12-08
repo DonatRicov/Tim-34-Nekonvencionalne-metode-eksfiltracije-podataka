@@ -1105,6 +1105,18 @@ U inboxu su vidljive poslane poruke, a otvaranjem pojedine poruke moguće je vid
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot6%20-%20mailhog%20mail%20-%20uslikan%20izmijenjen%20header.png?raw=true" />
 <p align="center"><em>Slika: MailHog web UI (otvorena poruka + prikaz zaglavlja s X‑Lab‑Tag)</em></p>
 
+## Analiza u Wiresharku (Follow TCP Stream)
+
+Datoteka smtp_capture.pcap otvorena je u Wiresharku. Primijenjen je filter:
+
+tcp.port == 1025
+
+Za detaljan prikaz SMTP komunikacije korištena je opcija:
+
+Follow → TCP Stream
+
+U prikazu TCP streama jasno su vidljive SMTP naredbe MAIL FROM, RCPT TO, DATA te zatim i kompletan sadržaj poruke (DATA sekcija), uključujući standardna zaglavlja (From, To, Subject) i prilagođeno zaglavlje X-Lab-Tag: EmailHeaderDemo-003 (ili odgovarajuća vrijednost). Time je potvrđeno da se custom zaglavlja prenose kao dio e-mail poruke i mogu se identificirati u snimljenom prometu u laboratorijskom okruženju kada se koristi nešifrirani SMTP.
+
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot%207%20-%20zadnji.png?raw=true" />
 <p align="center"><em>Slika: Wireshark Follow TCP Stream s vidljivim DATA i X‑Lab‑Tag redkom</em></p>
 
