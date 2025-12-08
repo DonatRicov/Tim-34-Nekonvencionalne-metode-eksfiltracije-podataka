@@ -14,11 +14,11 @@ Tijekom istraživanja i praktične implementacije nekonvencionalnih tehnika eksf
 
 ## 2. Steganografija
 
-- Skriveni sadržaj uspješno je umetnut u sve testirane PNG slike, bez vidljivih promjena u njihovom vizualnom prikazu. LSB metoda pokazala se stabilnom, a umetnuti podaci (tekst, tekstualne datoteke datoteke, zvučni zapis) bili su u potpunosti rekonstruirani bez gubitka integriteta.
+- Skriveni sadržaj uspješno je umetnut u sve testirane .png slike, bez vidljivih promjena u njihovom vizualnom prikazu. LSB metoda pokazala se stabilnom, a umetnuti podaci (tekst, tekstualne datoteke datoteke, zvučni zapis) bili su u potpunosti rekonstruirani bez gubitka integriteta.
 
 - .jpg format pokazao se nepouzdanim za LSB steganografiju. Tijekom testiranja Stegano je morao pretvoriti .jpg sliku u .png, što je uzrokovalo značajno povećanje veličine datoteke i potvrdilo teorijsko ograničenje *lossy* kompresije pri manipulaciji najmanje značajnih bitova.
 
-- Promjena veličine PNG datoteka nakon umetanja bila je minimalna, obično u rasponu od nekoliko desetaka kilobajta, što ukazuje da LSB metoda zahvaća samo bitove koji ne utječu na vizualnu kvalitetu slike.
+- Promjena veličine .png datoteka nakon umetanja bila je minimalna, obično u rasponu od nekoliko desetaka kilobajta, što ukazuje da LSB metoda zahvaća samo bitove koji ne utječu na vizualnu kvalitetu slike.
   
 - Kodiranje u Base64, umetanje sadržaja i naknadno izdvajanje obavljalo se pravilno, a rezultirajuće datoteke bile su identične izvornima. Automatizacija je uklonila mogućnost ljudske pogreške i standardizirala postupak.
 
