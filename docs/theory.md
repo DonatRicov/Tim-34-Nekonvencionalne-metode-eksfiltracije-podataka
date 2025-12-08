@@ -1069,6 +1069,17 @@ Servisi:
 - SMTP: 192.168.234.10:1025
 - Web UI: http://192.168.234.10:8025
 
+## Pokretanje SMTP servera (MailHog)
+
+Na Mint-MailServer VM-u pokrenut je MailHog kako bi se omogućio prihvat SMTP poruka. MailHog se pokreće u terminalu te ostaje aktivan tijekom testiranja.
+
+Primjer naredbe:
+
+```
+/usr/local/bin/mailhog
+```
+
+
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot1%20-%20Pokretanje%20SMTP%20servera%20koji%20slu%C5%A1a%20SMTP%20i%20HTTP%20zahtjeve.png?raw=true"/>
 <p align="center"><em>Slika: Postavke mrežnih adaptera u VirtualBoxu (NAT + Host‑Only).</em></p>
 
