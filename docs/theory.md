@@ -1083,6 +1083,15 @@ Primjer naredbe:
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot1%20-%20Pokretanje%20SMTP%20servera%20koji%20slu%C5%A1a%20SMTP%20i%20HTTP%20zahtjeve.png?raw=true"/>
 <p align="center"><em>Slika: Postavke mrežnih adaptera u VirtualBoxu (NAT + Host‑Only).</em></p>
 
+## Provjera povezanosti
+
+Prije slanja e-pošte provjerena je mrežna povezivost između VM-ova ping testom s Mint-Client prema Mint-MailServer:
+
+```
+ping -c 3 192.168.234.10
+```
+
+Time je potvrđeno da Host-Only mreža radi i da klijent može komunicirati sa SMTP serverom.
 <img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot3%20-%20snimanje%20prometa%20tcpdumpon.png?raw=true" />
 <p align="center"><em>Slika: Tcpdump terminal </em></p>
 
