@@ -490,7 +490,7 @@ Ovakav praktični pristup omogućio je jasnu ilustraciju koncepta digitalne steg
 
 U sklopu praktičnog dijela rada odabrane su originalne slike u koje je pomoću alata Stegano u terminalo uvrštena poruka, tekstualna datoteka te zvučni zapis. Uz to su napravljene i dvije skripte za automatizaciju umetanja poruke i dešifriranja iste iz izmjenjene slike.
 
-### 2.3.1. Umetanje poruke u terminalu
+### 3.3.1. Umetanje poruke u terminalu
 
 Za primjer se koristi originalna slika sa dodjele diploma.
 
@@ -508,11 +508,102 @@ pipx ensurepath
 
 pipx install stegano
 
-Zatim je u fotografiju (1) umetnuta tajna poruka. Za umetanje tajne poruke u sliku korištena je slijedeća naredba:
+Zatim je u fotografiju (1), veličine 633,5 kB (633.463 bytes), umetnuta tajna poruka. Za umetanje tajne poruke u sliku korištena je slijedeća naredba:
 <img width="940" height="36" alt="image" src="https://github.com/user-attachments/assets/83fac5a0-89ff-423b-b817-c59dd40520a1" />
 
-Napravljen je novi .png file koji sadrži poruku.
+Napravljen je novi .png file, veličine 2,3 MB (2.340.858 bytes), koji sadrži poruku.
 
+<img width="1695" height="1057" alt="poruka" src="https://github.com/user-attachments/assets/2b8106f8-740d-4dc4-a25b-5a26bf4d0735" />
+
+Poruka zatim može biti otkrivena iz slike korištenjem naredbe:
+
+<img width="607" height="38" alt="image" src="https://github.com/user-attachments/assets/b1d57901-3e61-4582-8109-409c8e2e4da2" />
+
+Kao što se može primjetiti iz veličine datoteka, rad sa .jpg formatom nije dobar ni optimalan, pa je u nastavku sve rađeno na .png datotekama.
+
+### 3.3.2. Umetanje .txt datoteke u fotografiju
+
+Zatim je u forografiju (2), veličine 7,7 MB (7.745.746 bytes), dodana tekstualna datoteka koja sadrži tekst *Lorem ipsum*. 
+
+<img width="1280" height="800" alt="image" src="https://github.com/user-attachments/assets/3bf0015d-6a96-443e-a1da-9acdc78cae1c" />
+
+<img width="752" height="23" alt="image" src="https://github.com/user-attachments/assets/15d821cf-9c29-4840-832a-cc8a7a2b0cbd" />
+
+Kreirana je nova datoteka sa nazivom sakrrivenFile.png, veličine 7,8 MB (7.841.829 bytes).
+
+<img width="4096" height="1840" alt="sakrrivenFile" src="https://github.com/user-attachments/assets/4d95d417-453b-422a-bcec-3eb030e0fcba" />
+
+Uočena je minimalna promjena veličine .png datoteke nakon umetanja teksta, što ukazuje na to da je LSB metoda izmijenila samo najmanje značajne bitove slike bez vidljivog utjecaja na njezin vizualni prikaz. Takva zanemariva razlika potvrđuje uspješnost i neprimjetnost steganografskog postupka, jer skriveni sadržaj ostaje nedetektiran standardnim vizualnim i površinskim analizama.
+
+Poruka je otkrivena pomoću naredbe:
+
+<img width="602" height="23" alt="image" src="https://github.com/user-attachments/assets/cf98ce95-e563-4f2f-acda-3c07644c86eb" />
+
+
+te je kreirana datoteka sa dešifriranom porukom:
+
+<img width="602" height="228" alt="image" src="https://github.com/user-attachments/assets/d9c73ccc-f81f-4ca6-aaae-a1e31eb6fa26" />
+
+
+### 3.3.3. Umetanje zvučnog zapisa u fotografiju
+
+Zvučni zapis umetnut je u sliku tako da je najprije pretvoren u Base64 tekstualni oblik, čime je omogućeno njegovo pouzdano kodiranje i prijenos unutar LSB strukture PNG slike. Ovakav pristup korišten je zato što LSB steganografija izvorno prihvaća samo tekstualne podatke, pa Base64 konverzija omogućuje skrivanje bilo kojeg binarnog sadržaja, uključujući audio datoteke, bez gubitka informacija i uz očuvanje vizualne neprimjetnosti slike. 
+
+Zvučni zapis pretvoren je u b64 format
+
+<img width="412" height="19" alt="image" src="https://github.com/user-attachments/assets/867955dd-6f72-4d8e-b48a-630372b4606c" />
+
+<img width="1280" height="800" alt="image" src="https://github.com/user-attachments/assets/27727893-3770-4dbc-a48f-0f562c2d4e67" />
+
+zatim je dobivena datoteka sakrivena unutar fotografije (2) veličine 7,7 MB (7.745.746 bytes).
+
+<img width="602" height="22" alt="image" src="https://github.com/user-attachments/assets/76e20dd8-08f2-45cf-abba-a818ae204d11" />
+
+Dobivena datoteka vizualno nema promjena od originalne slike, no njih možemo primjetiti u promjeni veličine na 8,1 MB (8.119.714 bytes). Razlog tome je veličina zvučnog zapisa. Iz tog razloga je dobro koristiti originalne fotografije kako drugi ne bi mogli usporediti uređivanu fotografiju sa originalnom, što mogu sa javno dostupnim slikama.
+
+<img width="4096" height="1840" alt="stereo" src="https://github.com/user-attachments/assets/a38f8382-8f69-4373-9ac7-484da97b7bd6" />
+
+Glasovna poruka zatim je izvučena iz fotografije na slijedeći način:
+
+<img width="582" height="35" alt="image" src="https://github.com/user-attachments/assets/fccfcfae-3be1-4d85-a9e9-1628098f3b08" />
+
+## 3.4. Automatizacija postupka ubacivanja i isčitavanja poruka unutar slikovnih datoteka
+
+U sklopu praktičnog dijela rada razvijen je skup Bash skripti namijenjenih automatizaciji postupka ubacivanja i izdvajanja skrivenih podataka iz slikovnih datoteka primjenom LSB steganografije. Ove skripte predstavljaju funkcionalni sloj nad postojećim Stegano alatom te omogućuju jednostavnije, ponovljivo i pouzdano izvođenje kompleksnih steganografskih operacija bez potrebe za ručnim unosom dugih naredbi ili prethodnim poznavanjem tehničkih detalja implementacije.
+
+Kreiranje skripte:
+
+<img width="343" height="20" alt="image" src="https://github.com/user-attachments/assets/dd28127a-ebf5-4998-ae8e-875e26a0337a" />
+
+Proces ubacivanja podataka temelji se na pretvaranju bilo koje ulazne datoteke, a to mogu biti tekstualni dokumenti, binarna datoteka ili zvučni zapis u Base64 formatu. Ovaj korak nužan je jer LSB metoda može obrađivati samo tekstualne nizove, dok se binarni podaci u izvornom obliku ne mogu izravno umetati u slikovne piksele. Nakon pretvorbe u Base64, skripta automatizirano poziva Stegano alat kako bi modificirala najmanje značajne bitove (LSB) piksela u PNG slici te time sigurno smjestila poruku unutar vizualno neprimjetnog dijela fotografije. Time se uklanja mogućnost ljudske pogreške u ručnom unosu naredbi, a čitav proces postaje skalabilan i primjenjiv u različitim scenarijima.
+
+Skripta za ubacivanje datoteke s porukom unutar slikovne datoteke:
+
+<img width="487" height="334" alt="image" src="https://github.com/user-attachments/assets/66e14534-d1fe-4b65-91da-1aaa46b4c759" />
+
+Ubacivanje poruke:
+
+<img width="602" height="42" alt="image" src="https://github.com/user-attachments/assets/560d6bb5-09f9-4975-8ff4-c2a139f019d6" />
+
+Dobivena je nova datoteka veličine 8,1 MB (8.119.714 bytes):
+
+<img width="4096" height="1840" alt="automatski" src="https://github.com/user-attachments/assets/13e0b880-8adf-4a26-9921-ed6e578e0775" />
+
+Skripta za isčitavanje podataka djeluje obrnuto. Iz odabrane stego-slike ekstrahira skriveni Base64 zapis te ga ponovno dekodira u izvornu binarnu datoteku. Na ovaj način omogućuje se pouzdano vraćanje originalnog sadržaja, čime se potvrđuje funkcionalnost i cjelovitost steganografskog procesa. Automatizacija osigurava da se svi koraci, od identifikacije skrivenih bitova do rekonstrukcije datoteke, odvijaju deterministički i bez ručnih intervencija.
+
+Skripta za otkrivanje poruke:
+
+<img width="598" height="398" alt="image" src="https://github.com/user-attachments/assets/8bdd0819-7530-496d-adc1-4176331a34e5" />
+
+Pokretanje skripte:
+
+<img width="602" height="80" alt="image" src="https://github.com/user-attachments/assets/a52b00e0-dca3-4f91-9313-17310191a7e0" />
+
+Korištenje ovakvih skripti značajno povećava praktičnu vrijednost steganografskih tehnika u stvarnim okruženjima. Automatizacija smanjuje tehničku složenost za krajnjeg korisnika, ubrzava postupak i omogućuje standardizaciju procesa, što je posebno važno u sigurnosnim simulacijama i forenzičkim analizama. Istovremeno, skripte demonstriraju kako se steganografija može integrirati u šire automatizirane sustave za prijenos osjetljivih podataka te naglašavaju potencijal ove tehnike kao dijela naprednih sigurnosnih i komunikacijskih mehanizama.
+
+Skripte su testirane i sa umetanjem .txt datoteka. Umetanjem dobbivena je fotografija veličine 7,8 MB (7.838.862 bytes). Sakrivanje pomoću skripte ili ručno nije učinilo razliku u veličini dobivenih datoteka.
+
+<img width="4096" height="1840" alt="sakrivamTekst" src="https://github.com/user-attachments/assets/4cb0751e-ed16-4742-9b37-eef0bc0889de" />
 
 
 # 4. Covert timing channels - Marin Vabec
