@@ -1054,8 +1054,7 @@ Cilj praktičnog dijela zadatka je demonstrirati slanje e‑pošte putem SMTP pr
 
 MailHogje alat za testiranje e‑pošte koji se ponaša kao lokalni SMTP server ("sink"): prima poruke, ali ih ne prosljeđuje dalje na internet. Poruke pohranjuje i prikazuje kroz web sučelje, pa je idealan za laboratorijske vježbe i sigurnu demonstraciju slanja e‑pošte.
 
-
-Wiresharkje alat za snimanje i analizu mrežnog prometa (packet analyzer). Omogućuje filtriranje prometa po protokolima/portovima i detaljan uvid u pakete. U ovom zadatku koristi se za prikaz SMTP komunikacije i pregled cijelog razgovora kroz opciju "Follow TCP Stream".
+Wiresharke alat za snimanje i analizu mrežnog prometa (packet analyzer). Omogućuje filtriranje prometa po protokolima/portovima i detaljan uvid u pakete. U ovom zadatku koristi se za prikaz SMTP komunikacije i pregled cijelog razgovora kroz opciju "Follow TCP Stream".
 
 ### 5.2.3. Postavljanje okruženja
 Ssimulaciju je izvedena u Oracle VirtualBox okruženju s dvije virtualne mašine povezane preko Host‑Only mreže:
@@ -1069,6 +1068,27 @@ Mrežna konfiguracija VM‑ova:
 Servisi:
 - SMTP: 192.168.234.10:1025
 - Web UI: http://192.168.234.10:8025
+
+<img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot1%20-%20Pokretanje%20SMTP%20servera%20koji%20slu%C5%A1a%20SMTP%20i%20HTTP%20zahtjeve.png?raw=true"/>
+<p align="center"><em>Slika: Postavke mrežnih adaptera u VirtualBoxu (NAT + Host‑Only).</em></p>
+
+<img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot2%20-%20mailhog%20UI.png?raw=true" />
+<p align="center"><em>Slika: MailHog terminal</em></p>
+
+<img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot3%20-%20snimanje%20prometa%20tcpdumpon.png?raw=true" />
+<p align="center"><em>Slika: Rezultat pinga </em></p>
+
+<img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot%204%20-%20slanje%20maila%20sa%20izmjenjenim%20headerom.png?raw=true" />
+<p align="center"><em>Slika: Client terminal nakon pokretanja skripte (ispis poslanih poruka i header vrijednosti)</em></p>
+
+<img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot%205%20-%20hvatanje%20paketa.png?raw=true" />
+<p align="center"><em>Slika: tcpdump (start “listening on…” i/ili stop sa “packets captured”)</em></p>
+
+<img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot6%20-%20mailhog%20mail%20-%20uslikan%20izmijenjen%20header.png?raw=true" />
+<p align="center"><em>Slika: MailHog web UI (otvorena poruka + prikaz zaglavlja s X‑Lab‑Tag)</em></p>
+
+<img alt="image" src="https://github.com/DonatRicov/Tim-34-Nekonvencionalne-metode-eksfiltracije-podataka/blob/main/results/screenshot/Screenshot%207%20-%20zadnji.png?raw=true" />
+<p align="center"><em>Slika: Wireshark Follow TCP Stream s vidljivim DATA i X‑Lab‑Tag redkom</em></p>
 
 # 6. Zaključak
 Kroz ovaj projektni zadatak, sustavno su istražene teorijske osnove i praktična primjena četiri nekonvencionalne metode eksfiltracije podataka. Kroz detaljan teorijski pregled i izradu funkcionalnih praktičnih primjera, demonstrirano je kako se ove tehnike mogu iskoristiti za prikriveni prijenos podataka, često zaobilazeći uobičajene sigurnosne mjere i mehanizme. Praktičnim simulacijama je potvrđena funkcionalnost svake metode.
