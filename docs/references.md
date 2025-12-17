@@ -37,4 +37,17 @@ Preuzeto s: [https://www.fortinet.com/resources/cyberglossary/data-exfiltration]
 
 5. WN E-Security. (2023, srpanj 12). Što su skriveni vremenski kanali i kako se koriste u cyber napadima? [https://wnesecurity.com/what-are-covert-timing-channels-and-how-are-they-used-in-cyberattacks/]
 
+## Dino Primorac - SMTP Abuse
+
+1. Klensin, J. (2008). *Simple Mail Transfer Protocol (RFC 5321).* RFC Editor. Preuzeto s: https://www.rfc-editor.org/rfc/rfc5321.html  
+
+2. Resnick, P. (2008). *Internet Message Format (RFC 5322).* RFC Editor. Preuzeto s: https://www.rfc-editor.org/rfc/rfc5322.html  
+
+3. Wikipedia contributors. (n.d.). *Simple Mail Transfer Protocol.* Wikipedia, The Free Encyclopedia. Preuzeto s: https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol  
+
+4. Mailtrap. (2025, siječanj 15). *Simple Mail Transfer Protocol (SMTP) Explained.* Preuzeto s: https://mailtrap.io/blog/smtp/  
+
+5. Cloudflare. (n.d.). *What are DMARC, DKIM, and SPF?*, Preuzeto s: https://www.cloudflare.com/learning/email-security/dmarc-dkim-spf/  
+
+6. Malek, P. (2024, veljača 13). *An Ultimate Guide to Email Authentication: SPF, DKIM, DMARC, and BIMI Protocols.* Mailtrap Blog., Preuzeto s: https://mailtrap.io/blog/email-authentication/ 
  
